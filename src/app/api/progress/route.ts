@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { successResponse, errorResponse } from '@/lib/api-response'
+import { updateUserStreak, checkStreakAchievements } from '@/lib/streak-tracker'
 
 // POST /api/progress - Mark lesson as completed
 export async function POST(request: NextRequest) {
@@ -67,7 +68,17 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return successResponse(progress)
+    // Update user streak
+    const streakData = await updateUserStreak(userId)
+    const newAchievements = checkStreakAchievements(streakData.streak)
+
+    return successResponse({
+      ...progress,
+      xpEarned: lesson.xpReward,
+      newLevel: user ? Math.floor(user.totalXP / 100) + 1 : 1,
+      streak: streakData,
+      newAchievements,
+    })
   } catch (error) {
     console.error('Error updating progress:', error)
     return errorResponse('Failed to update progress')

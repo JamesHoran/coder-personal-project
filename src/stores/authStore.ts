@@ -28,9 +28,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       // TODO: Implement actual auth logic
       // This is a mock implementation
       const mockUser: User = {
-        id: "1",
-        email,
-        displayName: email.split("@")[0],
+        id: "be3d97ac-e48a-4c37-8c2b-5cff1710d785", // Demo User UUID
+        email: "demo@example.com",
+        displayName: "Demo User",
         role: "student",
         createdAt: new Date().toISOString(),
       };
@@ -51,9 +51,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       // TODO: Implement actual auth logic
       const mockUser: User = {
-        id: Math.random().toString(36).substr(2, 9),
-        email,
-        displayName,
+        id: "be3d97ac-e48a-4c37-8c2b-5cff1710d785", // Demo User UUID
+        email: "demo@example.com",
+        displayName: "Demo User",
         role: "student",
         createdAt: new Date().toISOString(),
       };

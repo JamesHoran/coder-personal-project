@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import type { Course, Enrollment } from "@/types";
+import type { Course, Enrollment, UserProgress, Badge, Achievement } from "@/types";
 
 // Selected course atom
 export const selectedCourseAtom = atom<Course | null>(null);
@@ -38,3 +38,51 @@ export const courseProgressAtom = atom((get) => {
   const enrollment = enrollments.find((e) => e.courseId === course.id);
   return enrollment?.progress || 0;
 });
+
+// Gamification atoms
+export const userProgressAtom = atom<UserProgress | null>(null);
+
+export const userBadgesAtom = atom<Badge[]>([]);
+
+export const userAchievementsAtom = atom<Achievement[]>([]);
+
+// Derived atom for current level
+export const currentLevelAtom = atom((get) => {
+  const progress = get(userProgressAtom);
+  return progress?.level || 1;
+});
+
+// Derived atom for current XP
+export const currentXPAtom = atom((get) => {
+  const progress = get(userProgressAtom);
+  return progress?.currentXP || 0;
+});
+
+// Derived atom for earned badges
+export const earnedBadgesAtom = atom((get) => {
+  const badges = get(userBadgesAtom);
+  return badges.filter(b => b.earned);
+});
+
+// Derived atom for unlocked achievements
+export const unlockedAchievementsAtom = atom((get) => {
+  const achievements = get(userAchievementsAtom);
+  return achievements.filter(a => a.unlocked);
+});
+
+// Derived atom for XP to next level
+export const xpToNextLevelAtom = atom((get) => {
+  const progress = get(userProgressAtom);
+  if (!progress) return 100;
+
+  // Simple calculation - can be enhanced with level thresholds
+  const currentLevel = progress.level;
+  const nextLevelXP = currentLevel * 100; // 100 XP per level
+  const currentXP = progress.currentXP % (currentLevel * 100);
+
+  return nextLevelXP - currentXP;
+});
+
+// Module/Phase navigation atoms
+export const selectedPhaseIdAtom = atom<string | null>(null);
+export const selectedModuleIdAtom = atom<string | null>(null);

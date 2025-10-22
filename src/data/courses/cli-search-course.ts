@@ -1,0 +1,1286 @@
+import type { GamifiedCourse, Phase, Module } from "@/types";
+
+// Phase 1: Traditional Unix Tools
+const phase1Modules: Module[] = [
+  {
+    id: "cli-1.1",
+    phaseId: "cli-phase-1",
+    number: "1.1",
+    title: "grep Fundamentals",
+    questName: "Pattern Hunter",
+    description:
+      "Master grep syntax, basic pattern matching, and essential options for searching files efficiently.",
+    learningObjectives: [
+      "Understand grep syntax and usage",
+      "Master basic pattern matching",
+      "Learn grep options and flags",
+      "Search single and multiple files",
+      "Understand output formatting",
+      "Learn grep exit codes",
+      "Master case-sensitive/insensitive search",
+      "Work with line context",
+    ],
+    projects: [
+      {
+        id: "cli-1.1-p1",
+        name: "Log File Analyzer",
+        description:
+          "Search application logs, find error patterns, extract specific information, and count occurrences",
+        xp: 100,
+        successCriteria: [
+          "Extract meaningful insights from 10,000+ line logs",
+          "Find and categorize different error types",
+          "Count occurrences efficiently",
+          "Use context flags appropriately",
+        ],
+        timeEstimate: "2-3 hours",
+      },
+      {
+        id: "cli-1.1-p2",
+        name: "Code Search Tool",
+        description:
+          "Find function definitions, search for variable usage, locate import statements, and track TODOs",
+        xp: 75,
+        successCriteria: [
+          "Successfully find all function definitions",
+          "Track variable usage across files",
+          "Locate all import/require statements",
+          "Generate TODO report",
+        ],
+        timeEstimate: "1-2 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-1.1-c1",
+        name: "Basic Search",
+        description: "Complete 15 grep exercises",
+        xp: 50,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-1.1-c2",
+        name: "Pattern Master",
+        description: "Match 20 different patterns",
+        xp: 75,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-1.1-c3",
+        name: "Speed Demon",
+        description: "Find targets in under 10 seconds each",
+        xp: 100,
+        difficulty: "intermediate",
+        type: "speed",
+      },
+      {
+        id: "cli-1.1-c4",
+        name: "Boss Challenge",
+        description: "Debug production issue using only grep",
+        xp: 200,
+        difficulty: "advanced",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-1.2",
+    phaseId: "cli-phase-1",
+    number: "1.2",
+    title: "Regular Expressions with grep",
+    questName: "Regex Warrior",
+    description:
+      "Master regular expressions including character classes, quantifiers, anchors, and advanced patterns.",
+    learningObjectives: [
+      "Master basic regex syntax",
+      "Learn character classes",
+      "Understand quantifiers",
+      "Master anchors and boundaries",
+      "Learn capture groups (with egrep)",
+      "Work with alternation",
+      "Master lookaheads (with perl mode)",
+      "Optimize regex performance",
+    ],
+    projects: [
+      {
+        id: "cli-1.2-p1",
+        name: "Input Validator",
+        description:
+          "Validate email addresses, phone numbers, URLs, and data formats using regex patterns",
+        xp: 150,
+        successCriteria: [
+          "100% accurate email validation",
+          "Support multiple phone formats",
+          "Validate URLs correctly",
+          "Handle edge cases",
+        ],
+        timeEstimate: "3-4 hours",
+      },
+      {
+        id: "cli-1.2-p2",
+        name: "Code Pattern Detector",
+        description:
+          "Find SQL injection vulnerabilities, detect insecure password storage, locate XSS issues",
+        xp: 175,
+        successCriteria: [
+          "Detect all common security patterns",
+          "Build comprehensive security scanner",
+          "Minimize false positives",
+          "Generate detailed reports",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-1.2-c1",
+        name: "Regex Novice",
+        description: "Write 20 basic regex patterns",
+        xp: 75,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-1.2-c2",
+        name: "Regex Expert",
+        description: "Solve 15 complex regex puzzles",
+        xp: 125,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-1.2-c3",
+        name: "Validation Master",
+        description: "Create 10 real-world validators",
+        xp: 150,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-1.2-c4",
+        name: "Boss Challenge",
+        description: "Build regex-based security scanner",
+        xp: 300,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-1.3",
+    phaseId: "cli-phase-1",
+    number: "1.3",
+    title: "find Command Mastery",
+    questName: "File Explorer",
+    description:
+      "Master the find command for searching files by name, type, size, time, and permissions.",
+    learningObjectives: [
+      "Master find syntax and structure",
+      "Search by name, type, size",
+      "Use time-based searches",
+      "Master permission searches",
+      "Execute commands on results",
+      "Combine multiple criteria",
+      "Optimize find performance",
+      "Handle special characters",
+    ],
+    projects: [
+      {
+        id: "cli-1.3-p1",
+        name: "Disk Space Analyzer",
+        description:
+          "Find large files, locate old unused files, identify duplicates, and generate cleanup reports",
+        xp: 125,
+        successCriteria: [
+          "Identify all files over specified size",
+          "Find files by age criteria",
+          "Generate actionable cleanup report",
+          "Successfully free up disk space",
+        ],
+        timeEstimate: "2-3 hours",
+      },
+      {
+        id: "cli-1.3-p2",
+        name: "Code Quality Scanner",
+        description:
+          "Find files without tests, locate large files, find recently modified files",
+        xp: 150,
+        successCriteria: [
+          "Complete codebase health report",
+          "Identify test coverage gaps",
+          "Track file size distribution",
+          "Monitor recent changes",
+        ],
+        timeEstimate: "3-4 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-1.3-c1",
+        name: "Find Basics",
+        description: "Complete 15 find exercises",
+        xp: 60,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-1.3-c2",
+        name: "Complex Queries",
+        description: "Build 10 advanced searches",
+        xp: 100,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-1.3-c3",
+        name: "Performance Master",
+        description: "Optimize slow find commands",
+        xp: 125,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-1.3-c4",
+        name: "Boss Challenge",
+        description: "Build automated cleanup system",
+        xp: 250,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-1.4",
+    phaseId: "cli-phase-1",
+    number: "1.4",
+    title: "Combining grep and find",
+    questName: "Search Combinator",
+    description:
+      "Master combining grep and find with pipes, xargs, and parallel processing for powerful searches.",
+    learningObjectives: [
+      "Pipe find results to grep",
+      "Use xargs effectively",
+      "Parallel processing with xargs",
+      "Handle special characters in filenames",
+      "Optimize combined searches",
+      "Master complex search pipelines",
+      "Learn error handling",
+      "Build reusable search scripts",
+    ],
+    projects: [
+      {
+        id: "cli-1.4-p1",
+        name: "Codebase Search Engine",
+        description:
+          "Search all files for patterns, exclude directories, handle binary files, format results",
+        xp: 200,
+        successCriteria: [
+          "Lightning-fast code search working",
+          "Proper directory exclusion",
+          "Binary file handling",
+          "Beautiful result formatting",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+      {
+        id: "cli-1.4-p2",
+        name: "Security Audit Tool",
+        description:
+          "Scan for hardcoded secrets, find insecure permissions, detect vulnerabilities",
+        xp: 225,
+        successCriteria: [
+          "Comprehensive security scanner built",
+          "Multiple security checks implemented",
+          "Professional audit reports",
+          "Actionable recommendations",
+        ],
+        timeEstimate: "5-6 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-1.4-c1",
+        name: "Pipeline Builder",
+        description: "Create 15 search pipelines",
+        xp: 125,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-1.4-c2",
+        name: "Performance Tuner",
+        description: "Optimize slow searches",
+        xp: 150,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-1.4-c3",
+        name: "Script Master",
+        description: "Build 10 reusable scripts",
+        xp: 175,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-1.4-c4",
+        name: "Boss Challenge",
+        description: "Build enterprise code search tool",
+        xp: 400,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-1.5",
+    phaseId: "cli-phase-1",
+    number: "1.5",
+    title: "awk & sed for Text Processing",
+    questName: "Text Transformer",
+    description:
+      "Master awk and sed for advanced text processing, data transformation, and report generation.",
+    learningObjectives: [
+      "Master awk basics",
+      "Learn sed substitutions",
+      "Understand awk patterns and actions",
+      "Master field processing with awk",
+      "Learn sed address ranges",
+      "Combine sed and awk",
+      "Build data processing pipelines",
+      "Create report generators",
+    ],
+    projects: [
+      {
+        id: "cli-1.5-p1",
+        name: "Log Parser & Reporter",
+        description:
+          "Parse Apache/Nginx logs, extract statistics, generate formatted reports",
+        xp: 175,
+        successCriteria: [
+          "Parse multiple log formats",
+          "Extract meaningful statistics",
+          "Generate beautiful reports",
+          "Handle large log files efficiently",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+      {
+        id: "cli-1.5-p2",
+        name: "Data Transformation Pipeline",
+        description:
+          "Transform CSV data, clean and validate input, aggregate statistics",
+        xp: 200,
+        successCriteria: [
+          "Robust ETL pipeline using shell tools",
+          "Handle multiple data formats",
+          "Data validation implemented",
+          "Output in multiple formats",
+        ],
+        timeEstimate: "5-6 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-1.5-c1",
+        name: "awk Basics",
+        description: "Complete 15 exercises",
+        xp: 75,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-1.5-c2",
+        name: "sed Master",
+        description: "Transform 20 text files",
+        xp: 100,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-1.5-c3",
+        name: "Pipeline Builder",
+        description: "Create 10 data pipelines",
+        xp: 150,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-1.5-c4",
+        name: "Boss Challenge",
+        description: "Build log analysis dashboard generator",
+        xp: 350,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+];
+
+// Phase 2: Modern Search Tools
+const phase2Modules: Module[] = [
+  {
+    id: "cli-2.1",
+    phaseId: "cli-phase-2",
+    number: "2.1",
+    title: "ripgrep (rg) Mastery",
+    questName: "Speed Searcher",
+    description:
+      "Master ripgrep for blazing-fast code search with smart defaults and powerful features.",
+    learningObjectives: [
+      "Understand ripgrep advantages",
+      "Master rg basic usage",
+      "Learn automatic filtering (.gitignore)",
+      "Use file type filtering",
+      "Master glob patterns",
+      "Learn multiline search",
+      "Understand ripgrep performance",
+      "Integrate into workflows",
+    ],
+    projects: [
+      {
+        id: "cli-2.1-p1",
+        name: "Lightning-Fast Code Search",
+        description:
+          "Search massive codebases instantly with smart filtering and VS Code integration",
+        xp: 175,
+        successCriteria: [
+          "Search 1M+ lines in under 1 second",
+          "Smart filtering implemented",
+          "Create search shortcuts",
+          "VS Code integration working",
+        ],
+        timeEstimate: "3-4 hours",
+      },
+      {
+        id: "cli-2.1-p2",
+        name: "Codebase Analytics Tool",
+        description:
+          "Count code patterns, track technology usage, identify deprecated code",
+        xp: 200,
+        successCriteria: [
+          "Comprehensive codebase insights",
+          "Pattern frequency analysis",
+          "Technology stack mapping",
+          "Deprecation tracking",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-2.1-c1",
+        name: "Speed Challenge",
+        description: "Beat grep performance 10x",
+        xp: 100,
+        difficulty: "intermediate",
+        type: "speed",
+      },
+      {
+        id: "cli-2.1-c2",
+        name: "Pattern Master",
+        description: "Use advanced rg features",
+        xp: 125,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-2.1-c3",
+        name: "Integration Expert",
+        description: "Add rg to 5 workflows",
+        xp: 150,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-2.1-c4",
+        name: "Boss Challenge",
+        description: "Build intelligent code search engine",
+        xp: 400,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-2.2",
+    phaseId: "cli-phase-2",
+    number: "2.2",
+    title: "fd - Modern find Alternative",
+    questName: "File Finder Pro",
+    description:
+      "Master fd for intuitive and fast file searching with smart defaults and beautiful output.",
+    learningObjectives: [
+      "Understand fd advantages",
+      "Master fd syntax",
+      "Learn smart defaults",
+      "Use regex patterns",
+      "Master exclusion patterns",
+      "Execute commands on results",
+      "Integrate with other tools",
+      "Build efficient workflows",
+    ],
+    projects: [
+      {
+        id: "cli-2.2-p1",
+        name: "Smart File Manager",
+        description:
+          "Find files by complex criteria, organize automatically, build cleanup scripts",
+        xp: 150,
+        successCriteria: [
+          "10x faster file operations",
+          "Automatic file organization",
+          "Smart cleanup scripts",
+          "File indexing system",
+        ],
+        timeEstimate: "3-4 hours",
+      },
+      {
+        id: "cli-2.2-p2",
+        name: "Project Navigator",
+        description:
+          "Quick file access, smart suggestions, navigation tool, editor integration",
+        xp: 175,
+        successCriteria: [
+          "Jump to any file in <2 seconds",
+          "Smart file suggestions working",
+          "Editor integration complete",
+          "Navigation shortcuts configured",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-2.2-c1",
+        name: "fd Basics",
+        description: "Complete 15 exercises",
+        xp: 75,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-2.2-c2",
+        name: "Speed Master",
+        description: "Find files 5x faster",
+        xp: 100,
+        difficulty: "intermediate",
+        type: "speed",
+      },
+      {
+        id: "cli-2.2-c3",
+        name: "Automation Expert",
+        description: "Build 10 file scripts",
+        xp: 125,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-2.2-c4",
+        name: "Boss Challenge",
+        description: "Create intelligent file assistant",
+        xp: 300,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-2.3",
+    phaseId: "cli-phase-2",
+    number: "2.3",
+    title: "fzf - Interactive Fuzzy Finder",
+    questName: "Fuzzy Master",
+    description:
+      "Master fzf for interactive fuzzy finding to supercharge your terminal workflows.",
+    learningObjectives: [
+      "Understand fuzzy finding concept",
+      "Master fzf basics",
+      "Learn keybindings",
+      "Integrate with shell",
+      "Build custom workflows",
+      "Create interactive tools",
+      "Master preview features",
+      "Automate with fzf",
+    ],
+    projects: [
+      {
+        id: "cli-2.3-p1",
+        name: "Interactive Shell Enhancement",
+        description:
+          "Enhanced command history, quick file navigation, git branch switcher, process killer",
+        xp: 200,
+        successCriteria: [
+          "5x faster terminal operations",
+          "All shell enhancements working",
+          "Git integration complete",
+          "Process management tools ready",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+      {
+        id: "cli-2.3-p2",
+        name: "Custom Search Interface",
+        description:
+          "Build API explorer, create log viewer, make task picker, add fuzzy autocomplete",
+        xp: 225,
+        successCriteria: [
+          "Beautiful interactive CLI tools",
+          "Multiple search interfaces",
+          "Preview functionality working",
+          "Custom keybindings configured",
+        ],
+        timeEstimate: "5-6 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-2.3-c1",
+        name: "fzf Basics",
+        description: "Master all keybindings",
+        xp: 75,
+        difficulty: "beginner",
+        type: "completion",
+      },
+      {
+        id: "cli-2.3-c2",
+        name: "Integration Master",
+        description: "Add fzf to 10 workflows",
+        xp: 150,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-2.3-c3",
+        name: "Custom Tools",
+        description: "Build 5 fzf-powered tools",
+        xp: 175,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-2.3-c4",
+        name: "Boss Challenge",
+        description: "Create complete fuzzy IDE",
+        xp: 450,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-2.4",
+    phaseId: "cli-phase-2",
+    number: "2.4",
+    title: "Combining Modern Tools",
+    questName: "Tool Orchestrator",
+    description:
+      "Master combining ripgrep, fd, and fzf to build powerful productivity workflows.",
+    learningObjectives: [
+      "Combine rg, fd, and fzf",
+      "Build powerful pipelines",
+      "Create custom commands",
+      "Master shell functions",
+      "Build productivity scripts",
+      "Share with team",
+      "Optimize workflows",
+      "Automate common tasks",
+    ],
+    projects: [
+      {
+        id: "cli-2.4-p1",
+        name: "Developer Productivity Suite",
+        description:
+          "Quick file access, smart code search, interactive git operations, process management",
+        xp: 300,
+        successCriteria: [
+          "Complete CLI productivity toolkit",
+          "All tools integrated smoothly",
+          "Custom commands working",
+          "Team-ready scripts",
+        ],
+        timeEstimate: "6-8 hours",
+      },
+      {
+        id: "cli-2.4-p2",
+        name: "Team Automation Library",
+        description:
+          "Reusable search scripts, workflow automation, documentation, onboarding tools",
+        xp: 275,
+        successCriteria: [
+          "Boost entire team productivity",
+          "Well-documented scripts",
+          "Easy onboarding process",
+          "Shared automation library",
+        ],
+        timeEstimate: "5-7 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-2.4-c1",
+        name: "Pipeline Master",
+        description: "Create 20 tool combinations",
+        xp: 200,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-2.4-c2",
+        name: "Automation Expert",
+        description: "Build 15 workflow scripts",
+        xp: 225,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-2.4-c3",
+        name: "Sharing Champion",
+        description: "Help 5 teammates adopt tools",
+        xp: 175,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-2.4-c4",
+        name: "Boss Challenge",
+        description: "Build complete developer CLI framework",
+        xp: 600,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+];
+
+// Phase 3: Advanced Techniques
+const phase3Modules: Module[] = [
+  {
+    id: "cli-3.1",
+    phaseId: "cli-phase-3",
+    number: "3.1",
+    title: "Search Optimization & Performance",
+    questName: "Performance Optimizer",
+    description:
+      "Master performance optimization techniques for blazing-fast searches at scale.",
+    learningObjectives: [
+      "Profile search performance",
+      "Optimize slow searches",
+      "Understand indexing strategies",
+      "Master parallel searching",
+      "Learn caching techniques",
+      "Optimize regex patterns",
+      "Handle large datasets",
+      "Build high-performance tools",
+    ],
+    projects: [
+      {
+        id: "cli-3.1-p1",
+        name: "Search Performance Benchmarking",
+        description:
+          "Compare tool performance, benchmark approaches, find optimization opportunities",
+        xp: 225,
+        successCriteria: [
+          "10x performance improvements achieved",
+          "Comprehensive benchmarks documented",
+          "Best practices identified",
+          "Performance guide created",
+        ],
+        timeEstimate: "5-6 hours",
+      },
+      {
+        id: "cli-3.1-p2",
+        name: "Intelligent Search Cache",
+        description:
+          "Build search result caching, implement incremental updates, add expiration",
+        xp: 250,
+        successCriteria: [
+          "Sub-second repeat searches",
+          "Smart cache invalidation",
+          "Incremental updates working",
+          "Cache effectiveness measured",
+        ],
+        timeEstimate: "6-7 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-3.1-c1",
+        name: "Benchmark Master",
+        description: "Profile 20 search scenarios",
+        xp: 150,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-3.1-c2",
+        name: "Optimization Guru",
+        description: "Improve 15 slow searches",
+        xp: 200,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.1-c3",
+        name: "Cache Expert",
+        description: "Build efficient caching system",
+        xp: 175,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.1-c4",
+        name: "Boss Challenge",
+        description: "Optimize enterprise search infrastructure",
+        xp: 500,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-3.2",
+    phaseId: "cli-phase-3",
+    number: "3.2",
+    title: "Search Automation & Scripts",
+    questName: "Automation Master",
+    description:
+      "Build reusable search scripts and automation tools for common development tasks.",
+    learningObjectives: [
+      "Write reusable search scripts",
+      "Create command-line tools",
+      "Build search pipelines",
+      "Automate common tasks",
+      "Handle errors gracefully",
+      "Add logging and reporting",
+      "Make portable scripts",
+      "Share with team",
+    ],
+    projects: [
+      {
+        id: "cli-3.2-p1",
+        name: "Custom Search CLI Tool",
+        description:
+          "Build multi-purpose search tool with configuration, multiple commands, and documentation",
+        xp: 300,
+        successCriteria: [
+          "Production-ready CLI tool",
+          "Multiple commands supported",
+          "Configuration system working",
+          "Complete documentation",
+        ],
+        timeEstimate: "7-9 hours",
+      },
+      {
+        id: "cli-3.2-p2",
+        name: "Automated Code Quality Scanner",
+        description:
+          "Scan for code issues, generate reports, integrate with CI/CD, add custom rules",
+        xp: 325,
+        successCriteria: [
+          "Automated quality gate working",
+          "CI/CD integration complete",
+          "Custom rules supported",
+          "Professional reports generated",
+        ],
+        timeEstimate: "8-10 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-3.2-c1",
+        name: "Script Writer",
+        description: "Create 20 search scripts",
+        xp: 175,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-3.2-c2",
+        name: "Tool Builder",
+        description: "Build 5 CLI tools",
+        xp: 250,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.2-c3",
+        name: "CI/CD Integration",
+        description: "Automate 10 checks",
+        xp: 225,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.2-c4",
+        name: "Boss Challenge",
+        description: "Build enterprise search automation platform",
+        xp: 700,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-3.3",
+    phaseId: "cli-phase-3",
+    number: "3.3",
+    title: "IDE & Editor Integration",
+    questName: "Integration Specialist",
+    description:
+      "Integrate search tools into your development environment for maximum productivity.",
+    learningObjectives: [
+      "Integrate search tools in VS Code",
+      "Set up Vim/Neovim integration",
+      "Configure shell enhancements",
+      "Build custom extensions",
+      "Create keyboard shortcuts",
+      "Optimize editor workflows",
+      "Share team configurations",
+      "Build universal search experience",
+    ],
+    projects: [
+      {
+        id: "cli-3.3-p1",
+        name: "VS Code Search Enhancement",
+        description:
+          "Configure ripgrep in VS Code, add custom tasks, create snippets, build extension",
+        xp: 200,
+        successCriteria: [
+          "5x faster in-editor search",
+          "Custom search tasks working",
+          "Search snippets created",
+          "Extension configured",
+        ],
+        timeEstimate: "4-5 hours",
+      },
+      {
+        id: "cli-3.3-p2",
+        name: "Terminal Productivity Setup",
+        description:
+          "Configure shell enhancements, add aliases, build functions, create dotfiles",
+        xp: 225,
+        successCriteria: [
+          "Share-able productivity config",
+          "All enhancements working",
+          "Team dotfiles repository",
+          "Easy setup process",
+        ],
+        timeEstimate: "5-6 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-3.3-c1",
+        name: "VS Code Master",
+        description: "Optimize 10 search workflows",
+        xp: 125,
+        difficulty: "intermediate",
+        type: "completion",
+      },
+      {
+        id: "cli-3.3-c2",
+        name: "Vim Integration",
+        description: "Set up perfect Vim search",
+        xp: 150,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.3-c3",
+        name: "Shell Enhancement",
+        description: "Build 15 shell improvements",
+        xp: 175,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.3-c4",
+        name: "Boss Challenge",
+        description: "Create team-wide productivity framework",
+        xp: 400,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-3.4",
+    phaseId: "cli-phase-3",
+    number: "3.4",
+    title: "Language-Specific Search Patterns",
+    questName: "Language Specialist",
+    description:
+      "Master searching specific programming languages and building language-aware tools.",
+    learningObjectives: [
+      "Search JavaScript/TypeScript codebases",
+      "Master Python code searching",
+      "Search Java/C# projects",
+      "Work with Ruby codebases",
+      "Search configuration files",
+      "Find SQL queries",
+      "Search markup languages",
+      "Build language-specific patterns",
+    ],
+    projects: [
+      {
+        id: "cli-3.4-p1",
+        name: "Multi-Language Code Analyzer",
+        description:
+          "Build universal search tool supporting 10+ languages with specific patterns",
+        xp: 275,
+        successCriteria: [
+          "Search any codebase effectively",
+          "10+ languages supported",
+          "Language-specific patterns working",
+          "Analytics generation",
+        ],
+        timeEstimate: "6-7 hours",
+      },
+      {
+        id: "cli-3.4-p2",
+        name: "Framework Migration Helper",
+        description:
+          "Find deprecated API usage, suggest replacements, generate migration report",
+        xp: 300,
+        successCriteria: [
+          "Successful framework upgrade tool",
+          "Automated API detection",
+          "Smart replacement suggestions",
+          "Progress tracking",
+        ],
+        timeEstimate: "7-8 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-3.4-c1",
+        name: "Polyglot Master",
+        description: "Master search in 5 languages",
+        xp: 200,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.4-c2",
+        name: "Pattern Library",
+        description: "Build 50 language patterns",
+        xp: 250,
+        difficulty: "expert",
+        type: "completion",
+      },
+      {
+        id: "cli-3.4-c3",
+        name: "Migration Expert",
+        description: "Help 3 teams migrate frameworks",
+        xp: 225,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.4-c4",
+        name: "Boss Challenge",
+        description: "Build universal code transformation tool",
+        xp: 600,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+  {
+    id: "cli-3.5",
+    phaseId: "cli-phase-3",
+    number: "3.5",
+    title: "Production Debugging & Monitoring",
+    questName: "Production Hero",
+    description:
+      "Master using search tools for production debugging, log analysis, and incident response.",
+    learningObjectives: [
+      "Debug production issues with search",
+      "Analyze application logs",
+      "Find error patterns",
+      "Track down performance issues",
+      "Monitor system metrics",
+      "Build alert systems",
+      "Create debugging playbooks",
+      "Handle incident response",
+    ],
+    projects: [
+      {
+        id: "cli-3.5-p1",
+        name: "Log Analysis Platform",
+        description:
+          "Parse and analyze logs, find error patterns, track metrics, generate alerts",
+        xp: 350,
+        successCriteria: [
+          "Identify issues before users report them",
+          "Real-time monitoring working",
+          "Alert system functional",
+          "Comprehensive analytics",
+        ],
+        timeEstimate: "8-10 hours",
+      },
+      {
+        id: "cli-3.5-p2",
+        name: "Incident Response Toolkit",
+        description:
+          "Quick diagnostic tools, common issue patterns, debugging checklists, recovery scripts",
+        xp: 375,
+        successCriteria: [
+          "Reduce MTTR by 50%",
+          "All diagnostic tools ready",
+          "Playbooks documented",
+          "Recovery automation working",
+        ],
+        timeEstimate: "9-11 hours",
+      },
+    ],
+    challenges: [
+      {
+        id: "cli-3.5-c1",
+        name: "Debug Master",
+        description: "Solve 25 production issues",
+        xp: 250,
+        difficulty: "expert",
+        type: "completion",
+      },
+      {
+        id: "cli-3.5-c2",
+        name: "Pattern Detective",
+        description: "Find 20 error patterns",
+        xp: 225,
+        difficulty: "advanced",
+        type: "completion",
+      },
+      {
+        id: "cli-3.5-c3",
+        name: "Monitoring Expert",
+        description: "Build 10 monitoring tools",
+        xp: 275,
+        difficulty: "expert",
+        type: "completion",
+      },
+      {
+        id: "cli-3.5-c4",
+        name: "Boss Challenge",
+        description: "Build complete observability platform",
+        xp: 800,
+        difficulty: "expert",
+        type: "boss",
+      },
+    ],
+  },
+];
+
+// Define phases
+const phases: Phase[] = [
+  {
+    id: "cli-phase-1",
+    courseId: "cli-search-course",
+    number: 1,
+    title: "Traditional Unix Tools",
+    level: "Search Novice",
+    duration: "8-10 hours",
+    modules: phase1Modules,
+  },
+  {
+    id: "cli-phase-2",
+    courseId: "cli-search-course",
+    number: 2,
+    title: "Modern Search Tools",
+    level: "Modern Search Expert",
+    duration: "6-8 hours",
+    modules: phase2Modules,
+  },
+  {
+    id: "cli-phase-3",
+    courseId: "cli-search-course",
+    number: 3,
+    title: "Advanced Techniques & Automation",
+    level: "Search Master",
+    duration: "6-8 hours",
+    modules: phase3Modules,
+  },
+];
+
+// Level thresholds
+const levelThresholds = [
+  { level: 1, minXP: 0, title: "Search Novice" },
+  { level: 2, minXP: 150, title: "Search Novice" },
+  { level: 3, minXP: 300, title: "Search Novice" },
+  { level: 4, minXP: 500, title: "Pattern Hunter" },
+  { level: 5, minXP: 700, title: "Pattern Hunter" },
+  { level: 6, minXP: 900, title: "Pattern Hunter" },
+  { level: 7, minXP: 1200, title: "Search Expert" },
+  { level: 8, minXP: 1500, title: "Search Expert" },
+  { level: 9, minXP: 1800, title: "Search Expert" },
+  { level: 10, minXP: 2200, title: "Search Expert" },
+  { level: 11, minXP: 2700, title: "Tool Master" },
+  { level: 12, minXP: 3200, title: "Tool Master" },
+  { level: 13, minXP: 3700, title: "Tool Master" },
+  { level: 14, minXP: 4300, title: "Tool Master" },
+  { level: 15, minXP: 4900, title: "Tool Master" },
+  { level: 16, minXP: 5500, title: "Search Architect" },
+  { level: 17, minXP: 6200, title: "Search Architect" },
+  { level: 18, minXP: 6900, title: "Search Architect" },
+  { level: 19, minXP: 7600, title: "Search Architect" },
+  { level: 20, minXP: 8400, title: "Search Architect" },
+  { level: 21, minXP: 9200, title: "Search Guru" },
+  { level: 22, minXP: 10100, title: "Search Guru" },
+  { level: 23, minXP: 11000, title: "Search Guru" },
+  { level: 24, minXP: 12000, title: "Search Guru" },
+  { level: 25, minXP: 13100, title: "Search Guru" },
+];
+
+// Calculate total XP
+const totalXP = phases.reduce((phaseSum, phase) => {
+  return (
+    phaseSum +
+    phase.modules.reduce((moduleSum, module) => {
+      const projectXP = module.projects.reduce((sum, p) => sum + p.xp, 0);
+      const challengeXP = module.challenges.reduce((sum, c) => sum + c.xp, 0);
+      return moduleSum + projectXP + challengeXP;
+    }, 0)
+  );
+}, 0);
+
+// Command-Line Search course definition
+export const cliSearchCourse: GamifiedCourse = {
+  id: "cli-search-course",
+  title: "Command-Line Search Mastery",
+  description:
+    "Master grep, find, ripgrep & Modern Search Tools for Developer Excellence. 10x your productivity through command-line mastery.",
+  instructor: {
+    id: "instructor-3",
+    userId: "user-3",
+    name: "CLI Expert Team",
+    bio: "Expert command-line developers with decades of Unix/Linux experience",
+    expertise: [
+      "Unix/Linux",
+      "Shell Scripting",
+      "DevOps",
+      "Search Optimization",
+    ],
+    coursesCount: 2,
+    studentsCount: 8500,
+    rating: 4.9,
+  },
+  thumbnail: "/images/courses/cli-search-course.jpg",
+  price: 0,
+  enrollmentCount: 0,
+  rating: 4.9,
+  duration: 1800, // 30 hours in minutes
+  level: "beginner",
+  category: "Developer Tools",
+  lessons: [],
+  type: "gamified",
+  phases,
+  totalXP,
+  levelThresholds,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
+export default cliSearchCourse;

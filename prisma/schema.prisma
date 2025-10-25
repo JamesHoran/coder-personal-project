@@ -31,6 +31,7 @@ model User {
   // Relations
   enrollments   Enrollment[]
   progress      LessonProgress[]
+  projectProgress ProjectProgress[]
   quizAttempts  QuizAttempt[]
   achievements  UserAchievement[]
   badges        UserBadge[]
@@ -116,6 +117,8 @@ model Lesson {
 }
 
 // Project (hands-on projects)
+// Note: Projects are now stored in TypeScript files, not in database
+// This model exists only for future migration purposes
 model Project {
   id          String   @id @default(uuid())
   moduleId    String
@@ -133,6 +136,8 @@ model Project {
 }
 
 // Challenge (coding challenges)
+// Note: Challenges are now stored in TypeScript files, not in database
+// This model exists only for future migration purposes
 model Challenge {
   id          String   @id @default(uuid())
   moduleId    String
@@ -148,7 +153,6 @@ model Challenge {
   order       Int
 
   module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  submissions ChallengeSubmission[]
 
   @@index([moduleId])
 }
@@ -157,7 +161,7 @@ model Challenge {
 model ChallengeSubmission {
   id          String   @id @default(uuid())
   userId      String
-  challengeId String
+  challengeId String   // Reference to challenge ID (not a foreign key, as challenges are in TypeScript files)
   code        String
   passed      Boolean  @default(false)
   xpEarned    Int      @default(0)
@@ -165,7 +169,6 @@ model ChallengeSubmission {
   submittedAt DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([challengeId])
@@ -250,6 +253,23 @@ model LessonProgress {
   @@unique([userId, lessonId])
   @@index([userId])
   @@index([lessonId])
+}
+
+// Project Progress
+model ProjectProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  projectId   String   // Reference to project ID (not a foreign key, as projects are in TypeScript files)
+  completed   Boolean  @default(false)
+  xpEarned    Int      @default(0)
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+  @@index([userId])
+  @@index([projectId])
 }
 
 // Achievement (predefined achievements)

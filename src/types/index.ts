@@ -197,3 +197,55 @@ export interface GamifiedCourse extends Course {
   totalXP: number;
   levelThresholds: { level: number; minXP: number; title: string }[];
 }
+
+// Interactive Lesson types (freeCodeCamp-style)
+export interface InteractiveLesson {
+  id: string;
+  moduleId: string;
+  title: string;
+  order: number;
+  xpReward: number;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  steps: LessonStep[];
+}
+
+export interface LessonStep {
+  id: string;
+  order: number;
+  instruction: string; // Markdown instruction text
+  hint?: string; // Optional hint
+  starterCode: string; // Initial code in the editor
+  solution: string; // Correct solution
+  testCases: TestCase[];
+  language: "javascript" | "typescript" | "jsx" | "tsx" | "html" | "css";
+}
+
+export interface TestCase {
+  id: string;
+  description: string;
+  testFunction: string; // JavaScript function that returns boolean
+  errorMessage?: string; // Message to show when test fails
+}
+
+export interface InteractiveLessonProgress {
+  userId: string;
+  lessonId: string;
+  currentStepIndex: number;
+  completedSteps: string[]; // step IDs
+  code: Record<string, string>; // stepId -> user's code
+  completed: boolean;
+  xpEarned: number;
+  startedAt: string;
+  completedAt?: string;
+}
+
+export interface TestResult {
+  stepId: string;
+  passed: boolean;
+  results: {
+    testId: string;
+    description: string;
+    passed: boolean;
+    errorMessage?: string;
+  }[];
+}

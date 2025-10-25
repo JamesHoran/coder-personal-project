@@ -11,6 +11,7 @@ import sqlCourse from "@/data/courses/sql-course";
 import cliSearchCourse from "@/data/courses/cli-search-course";
 import pythonCourse from "@/data/courses/python-course";
 import jestCourse from "@/data/courses/jest-course";
+import { typescriptCourse } from "@/data/courses/typescript-course";
 
 export default function CoursesPage() {
   return (
@@ -494,6 +495,65 @@ export default function CoursesPage() {
                   <span className="text-3xl font-bold">${jestCourse.price}</span>
                   <Link href="/courses/jest">
                     <Button size="lg" className="bg-rose-600 hover:bg-rose-700">Start Learning</Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* TypeScript Complete Course - Featured */}
+        <Card className="mb-8 border-2 border-primary bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-950 dark:to-blue-950">
+          <CardHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge className="bg-gradient-to-r from-indigo-500 to-blue-500">
+                <Trophy className="h-3 w-3 mr-1" />
+                Gamified Course
+              </Badge>
+              <Badge variant="secondary">New</Badge>
+              <Badge variant="outline">Interview Prep</Badge>
+            </div>
+            <CardTitle className="text-3xl">{typescriptCourse.title}</CardTitle>
+            <CardDescription className="text-base">{typescriptCourse.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold mb-3">Course Features</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-indigo-500" />
+                    Earn {typescriptCourse.totalXP.toLocaleString()} XP through gamified learning
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-indigo-500" />
+                    Progress through {typescriptCourse.phases.length} phases - fundamentals to production patterns
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Star className="h-4 w-4 text-indigo-500" />
+                    Master {typescriptCourse.phases.reduce((sum, p) => sum + p.modules.length, 0)} modules covering all TypeScript essentials
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                  <div className="flex items-center gap-1">
+                    <Star className="h-4 w-4 fill-indigo-400 text-indigo-400" />
+                    <span>{typescriptCourse.rating}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="h-4 w-4" />
+                    <span>{typescriptCourse.enrollmentCount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    <span>{Math.floor(typescriptCourse.duration / 60)}h</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl font-bold">${typescriptCourse.price}</span>
+                  <Link href={`/courses/${typescriptCourse.id}`}>
+                    <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700">Start Learning</Button>
                   </Link>
                 </div>
               </div>

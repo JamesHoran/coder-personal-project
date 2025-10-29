@@ -299,18 +299,43 @@ describe("Button", () => {
 - **Module Optimization** - Tree-shaking with modularized imports
 - **Separate Build Dirs** - Faster dev rebuilds
 
+## 📚 Documentation
+
+**All project documentation has been organized in the [`/docs`](docs/) directory.**
+
+### Quick Links
+
+- **[Documentation Hub](docs/README.md)** - Start here for complete documentation index
+- **[Architecture](docs/architecture/INTERACTIVE_LESSON_ARCHITECTURE.md)** - Reusable framework for interactive lessons
+- **[Audit Reports](docs/audits/AUDIT_MASTER_INDEX.md)** - Current issues and fixes (58 issues, 7 sub-reports)
+- **[Course Formats](docs/courses/REACT_COURSE_FREECODECAMP_FORMAT.md)** - FreeCodeCamp-style lesson creation guide
+- **[Quick Start](docs/quickstart/QUICK_START.md)** - Get started quickly
+
+### For Developers
+
+- Building interactive lessons? → [Interactive Lesson Architecture](docs/architecture/INTERACTIVE_LESSON_ARCHITECTURE.md)
+- Fixing bugs? → [Audit Master Index](docs/audits/AUDIT_MASTER_INDEX.md)
+- Creating courses? → [React Course Format](docs/courses/REACT_COURSE_FREECODECAMP_FORMAT.md)
+
+### For QA Engineers
+
+- Setting up tests? → [AUDIT_07: Testing Infrastructure](docs/audits/AUDIT_07_QA_TESTING_INFRASTRUCTURE.md)
+- Finding issues? → [Complete Audit Report](docs/audits/AUDIT_REPORT.md)
+
+---
+
 ## Future Enhancements
 
-- [ ] GraphQL API integration
-- [ ] Video player component
-- [ ] Quiz system
-- [ ] Progress tracking
-- [ ] Certificates
-- [ ] Payment integration
-- [ ] Admin dashboard
-- [ ] Course creation tools
-- [ ] Real-time notifications
-- [ ] Social features
+See [Audit Reports](docs/audits/AUDIT_MASTER_INDEX.md) for prioritized work items.
+
+High-priority items include:
+- [ ] Fix authentication system (CRITICAL)
+- [ ] Implement enrollment flow
+- [ ] Build interactive lesson player
+- [ ] Add testing infrastructure
+- [ ] Progress tracking improvements
+- [ ] Add global navigation
+- [ ] Leaderboard and badges
 
 ## Contributing
 
@@ -320,6 +345,11 @@ This project is set up for learning and demonstration purposes. Feel free to:
 - Improve existing components
 - Add more tests
 - Enhance documentation
+
+**Before contributing:**
+1. Read the [Documentation Hub](docs/README.md)
+2. Check the [Audit Reports](docs/audits/AUDIT_MASTER_INDEX.md) for priority items
+3. Follow patterns in [CLAUDE.md](CLAUDE.md)
 
 ## License
 

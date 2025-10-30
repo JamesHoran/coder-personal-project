@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useAuthStore } from '@/stores/authStore'
 
 interface ProgressContextType {
   completedProjects: Set<string>
@@ -24,10 +25,16 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [userLevel, setUserLevel] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Hardcoded user ID for now - in production, get from auth
-  const userId = 'e944cde4-af3a-4133-833c-fdbc3846af81'
+  // Get user ID from auth store
+  const { user } = useAuthStore()
+  const userId = user?.id
 
   const loadProgress = async (courseId: string) => {
+    if (!userId) {
+      setIsLoading(false)
+      return
+    }
+
     setIsLoading(true)
     try {
       const response = await fetch(`/api/progress/course/${courseId}?userId=${userId}`)
@@ -48,6 +55,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }
 
   const markProjectComplete = async (projectId: string, xp: number) => {
+    if (!userId) {
+      console.error('Cannot mark project complete: user not authenticated')
+      return
+    }
+
     try {
       const response = await fetch('/api/projects/complete', {
         method: 'POST',
@@ -68,6 +80,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }
 
   const markChallengeComplete = async (challengeId: string, xp: number) => {
+    if (!userId) {
+      console.error('Cannot mark challenge complete: user not authenticated')
+      return
+    }
+
     try {
       const response = await fetch('/api/challenges/complete', {
         method: 'POST',

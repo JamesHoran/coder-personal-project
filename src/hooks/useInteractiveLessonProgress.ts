@@ -37,7 +37,7 @@ export function useInteractiveLessonProgress(
   );
 
   const completeLesson = useCallback(
-    (xpReward: number) => {
+    async (xpReward: number) => {
       setProgress((prev) => ({
         ...prev,
         completed: true,
@@ -47,12 +47,43 @@ export function useInteractiveLessonProgress(
 
       setTotalXP((prev) => prev + xpReward);
 
-      // In a real app, you would call an API here to:
-      // 1. Update user's total XP in database
-      // 2. Check for level ups
-      // 3. Check for badge/achievement unlocks
-      // 4. Update leaderboard
-      console.log(`Lesson completed! +${xpReward} XP earned`);
+      // Call API to persist lesson completion
+      try {
+        const response = await fetch('/api/lessons/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            lessonId,
+            xp: xpReward,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          console.log(`Lesson completed! +${xpReward} XP earned`);
+
+          // Update total XP with actual value from server
+          setTotalXP(data.data.totalXP);
+
+          // Show level up notification if applicable
+          if (data.data.leveledUp) {
+            showLevelUpNotification(data.data.newLevel);
+          }
+
+          // Show achievement notifications
+          if (data.data.achievements && data.data.achievements.length > 0) {
+            data.data.achievements.forEach((achievement: any) => {
+              showAchievementNotification(achievement);
+            });
+          }
+        } else {
+          console.error('Failed to save lesson progress:', data.error);
+        }
+      } catch (error) {
+        console.error('Error completing lesson:', error);
+      }
 
       // Trigger notification (if notification system is available)
       if (typeof window !== "undefined") {
@@ -60,7 +91,7 @@ export function useInteractiveLessonProgress(
         showXPNotification(xpReward);
       }
     },
-    []
+    [userId, lessonId]
   );
 
   const saveCode = useCallback((stepId: string, code: string) => {
@@ -101,6 +132,30 @@ function showXPNotification(xp: number) {
   // You could also dispatch a custom event that your NotificationSystem listens to
   const event = new CustomEvent("xp-earned", {
     detail: { xp, message: `You earned ${xp} XP!` },
+  });
+  window.dispatchEvent(event);
+}
+
+/**
+ * Show level up notification
+ */
+function showLevelUpNotification(level: number) {
+  console.log(`🎊 Level Up! You are now level ${level}!`);
+
+  const event = new CustomEvent("level-up", {
+    detail: { level, message: `Level Up! You are now level ${level}!` },
+  });
+  window.dispatchEvent(event);
+}
+
+/**
+ * Show achievement unlock notification
+ */
+function showAchievementNotification(achievement: { name: string; description: string }) {
+  console.log(`🏆 Achievement Unlocked: ${achievement.name}`);
+
+  const event = new CustomEvent("achievement-unlocked", {
+    detail: { achievement, message: `Achievement Unlocked: ${achievement.name}` },
   });
   window.dispatchEvent(event);
 }

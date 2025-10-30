@@ -6,20 +6,18 @@ import { useInteractiveLessonProgress } from "@/hooks/useInteractiveLessonProgre
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
 
-interface PageProps {
-  params: {
-    lessonId: string;
-  };
-}
+export default function InteractiveLessonPage() {
+  const params = useParams<{ lessonId: string }>();
 
-export default function InteractiveLessonPage({ params }: PageProps) {
   // Find the lesson by ID
   const lesson = reactBasicsLessons.find((l) => l.id === params.lessonId);
 
-  // Mock user ID - in real app, get from auth context
-  const userId = "mock-user-1";
+  // Get user from auth context
+  const { user } = useAuthStore();
+  const userId = user?.id || "";
 
   const { progress, totalXP, completeStep, completeLesson } =
     useInteractiveLessonProgress(params.lessonId, userId);

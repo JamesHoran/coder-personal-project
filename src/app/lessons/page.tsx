@@ -120,7 +120,7 @@ export default function LessonsPage() {
 
                 {/* Steps Preview */}
                 <div className="text-sm">
-                  <p className="font-medium mb-2">What you'll learn:</p>
+                  <p className="font-medium mb-2">What you&apos;ll learn:</p>
                   <ul className="space-y-1 text-muted-foreground">
                     {lesson.steps.slice(0, 3).map((step) => (
                       <li key={step.id} className="flex items-start gap-2">

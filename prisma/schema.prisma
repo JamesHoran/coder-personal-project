@@ -36,6 +36,7 @@ model User {
   achievements  UserAchievement[]
   badges        UserBadge[]
   submissions   ChallengeSubmission[]
+  lessonSubmissions LessonSubmission[]
 }
 
 // Course model
@@ -174,6 +175,29 @@ model ChallengeSubmission {
   @@index([challengeId])
 }
 
+// Interactive Lesson Submission (for React, TypeScript, etc. courses)
+model LessonSubmission {
+  id          String   @id @default(uuid())
+  userId      String
+  lessonId    String   // Interactive lesson ID (e.g., "react-basics-01", "ts-basics-01")
+  stepId      String   // Step ID within the lesson
+  code        String   // The code submitted by the user
+  passed      Boolean  @default(false)
+  testResults String?  // JSON of test results
+  attempts    Int      @default(1)
+  xpEarned    Int      @default(0)
+  language    String   // typescript, jsx, tsx, javascript
+  submittedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([lessonId])
+  @@index([stepId])
+  @@index([passed])
+  @@index([submittedAt])
+}
+
 // Quiz
 model Quiz {
   id          String   @id @default(uuid())
@@ -221,13 +245,14 @@ model QuizAttempt {
 
 // Enrollment
 model Enrollment {
-  id          String   @id @default(uuid())
-  userId      String
-  courseId    String
-  status      String   @default("active") // active, completed, paused
-  progress    Float    @default(0) // 0-100
-  enrolledAt  DateTime @default(now())
-  completedAt DateTime?
+  id             String   @id @default(uuid())
+  userId         String
+  courseId       String
+  status         String   @default("active") // active, completed, paused
+  progress       Float    @default(0) // 0-100
+  enrolledAt     DateTime @default(now())
+  completedAt    DateTime?
+  lastAccessedAt DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)

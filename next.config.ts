@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
 
+  // Redirects for old React course routes
+  async redirects() {
+    return [
+      {
+        source: "/react-course",
+        destination: "/courses/react",
+        permanent: true,
+      },
+      {
+        source: "/react-course/lesson",
+        destination: "/courses/react",
+        permanent: true,
+      },
+    ];
+  },
+
   // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],

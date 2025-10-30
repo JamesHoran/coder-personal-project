@@ -142,6 +142,7 @@ export interface Phase {
   courseId: string;
   number: number;
   title: string;
+  description?: string;
   level: string;
   duration: string;
   modules: Module[];

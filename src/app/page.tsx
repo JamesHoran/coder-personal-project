@@ -2,8 +2,19 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, GraduationCap, Users, TrendingUp } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch real courses from database
+  const courses = await prisma.course.findMany({
+    where: {
+      isPublished: true,
+    },
+    orderBy: {
+      studentCount: 'desc',
+    },
+    take: 3,
+  });
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -81,16 +92,16 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Popular Courses</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popularCourses.map((course) => (
+            {courses.map((course) => (
               <Card key={course.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle>{course.title}</CardTitle>
-                  <CardDescription>{course.instructor}</CardDescription>
+                  <CardDescription>{course.instructorName}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">{course.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{course.students} students</span>
+                    <span className="text-sm font-medium">{course.studentCount.toLocaleString()} students</span>
                     <Link href={`/courses/${course.id}`}>
                       <Button variant="outline" size="sm">View Course</Button>
                     </Link>
@@ -104,27 +115,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-const popularCourses = [
-  {
-    id: "1",
-    title: "Complete Web Development Bootcamp",
-    instructor: "Dr. Angela Yu",
-    description: "Become a full-stack web developer with HTML, CSS, JavaScript, React, and Node.js",
-    students: "50,000+",
-  },
-  {
-    id: "2",
-    title: "Python for Data Science",
-    instructor: "Jose Portilla",
-    description: "Master Python programming and data analysis with pandas, NumPy, and Matplotlib",
-    students: "35,000+",
-  },
-  {
-    id: "3",
-    title: "Machine Learning A-Z",
-    instructor: "Kirill Eremenko",
-    description: "Learn to create Machine Learning Algorithms in Python and R from industry experts",
-    students: "40,000+",
-  },
-];

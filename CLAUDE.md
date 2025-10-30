@@ -511,7 +511,166 @@ Jump to [Module 2: Advanced Patterns](#module-2-advanced-patterns)
 
 ---
 
-## Final Notes
+## Critical-Auditor Agent Usage
+
+### IMPORTANT: When to Use the Critical-Auditor
+
+The **critical-auditor** agent is your truth-telling quality guardian. You MUST use it proactively in these situations:
+
+**Automatic Triggers - Use the Task tool with `subagent_type: "critical-auditor"` when you see:**
+
+| User Says | What They Mean | Action Required |
+|-----------|----------------|-----------------|
+| "audit" | Run critical audit | ✅ Invoke critical-auditor |
+| "critically review" | Deep quality check | ✅ Invoke critical-auditor |
+| "is this production ready?" | Final verification | ✅ Invoke critical-auditor |
+| "what could go wrong?" | Risk assessment | ✅ Invoke critical-auditor |
+| "tell me the truth" | Honest evaluation | ✅ Invoke critical-auditor |
+| "review this like a detective" | Skeptical analysis | ✅ Invoke critical-auditor |
+| "what security issues exist?" | Security audit | ✅ Invoke critical-auditor |
+
+**Proactive Usage - Use WITHOUT being asked when:**
+
+1. **Before finalizing major course content** - Ensure educational quality meets standards
+2. **After another agent completes work** - Verify claims and check for missed issues
+3. **Before production deployment** - Final safety check
+4. **When implementing feedback loops** - Round 1 audit → fixes → Round 2 audit → Round 3 final
+5. **After significant refactoring** - Ensure quality didn't degrade
+
+### Critical-Auditor Invocation Pattern
+
+**Correct way to invoke:**
+```
+Use the Task tool with these parameters:
+- subagent_type: "critical-auditor"
+- description: "Audit [specific thing]"
+- prompt: "[Detailed prompt explaining what to audit and what to focus on]"
+```
+
+**Example invocations:**
+```
+Task(
+  subagent_type="critical-auditor",
+  description="Audit React course quality",
+  prompt="Perform a critical audit of the React course at REACT_COURSE_REQUIREMENTS.md.
+         Focus on: 1) Code example accuracy, 2) Interview question relevance,
+         3) Modern React patterns (2025), 4) Missing error handling patterns.
+         Provide specific line numbers for all issues found."
+)
+```
+
+### The 3-Round Feedback Loop Pattern
+
+When quality is critical, use this proven pattern:
+
+**Round 1: Initial Critical Audit**
+1. Invoke critical-auditor to identify ALL issues
+2. Create PRPs (Product Requirements Prompts) from findings
+3. Group issues by priority: CRITICAL → HIGH → MEDIUM → LOW
+
+**Round 2: Verification Audit**
+1. Fix Priority 1 issues
+2. Invoke critical-auditor again to verify fixes
+3. Identify remaining issues and regression problems
+
+**Round 3: Final Production Audit**
+1. Fix all remaining issues
+2. Final critical-auditor audit for production readiness
+3. Get "SHIP IT" verdict or iterate further
+
+**Success metrics from React course example:**
+- Quality improved from 3.5/10 → 10/10
+- Time investment: 28.5 hours vs 40-60 hours without feedback loop
+- Success probability: 99% vs 40% without systematic auditing
+
+### What the Critical-Auditor Checks
+
+**Code Quality:**
+- Anti-patterns (index keys, missing cleanup, memory leaks)
+- Security vulnerabilities (XSS, SQL injection, auth issues)
+- Performance killers (N+1 queries, blocking operations)
+- Type safety issues (improper `any` usage, missing error handling)
+- Maintainability concerns
+
+**Educational Content:**
+- Accuracy of code examples (do they actually work?)
+- Modern best practices (2025 standards)
+- Interview question relevance
+- Missing critical concepts
+- Outdated or deprecated patterns
+
+**Architecture & Design:**
+- Scalability concerns
+- Technical debt
+- Over-engineering
+- Coupling issues
+- Missing abstractions
+
+**Documentation:**
+- Accuracy vs reality
+- Completeness
+- Outdated information
+- False claims
+- Missing warnings
+
+### Agent Output Location
+
+Critical-auditor generates reports saved to:
+- `/audits/` directory
+- Naming pattern: `[TOPIC]_CRITICAL_AUDIT_ROUND_[N].md`
+- Each report includes: Executive Summary, Critical Issues, High Priority Issues, Overall Assessment
+
+### Red Flags That Require Critical-Auditor
+
+**Immediate audit required when you see:**
+- ❌ Claims of "production ready" without error handling
+- ❌ "It's fully tested" without actual test coverage verification
+- ❌ Code examples teaching anti-patterns
+- ❌ Security considerations marked "TODO"
+- ❌ Performance claims without benchmarks
+- ❌ Another agent claims "fixed" without verification
+- ❌ Unbounded recursion or memory leaks
+- ❌ Missing type safety
+- ❌ Outdated dependencies with known vulnerabilities
+
+### Critical-Auditor Communication Style
+
+The agent is configured to be:
+- **Direct and honest** - No sugar-coating
+- **Evidence-based** - Backs up claims with file paths and line numbers
+- **Skeptical** - Questions all claims, even from other agents
+- **Risk-focused** - Identifies what WILL break, not what "might be concerning"
+- **Actionable** - Provides concrete fixes, not vague suggestions
+
+**Example output format:**
+```markdown
+🚨 **CRITICAL: Index Key Anti-Pattern** - Severity: CRITICAL
+- **Location**: src/lessons/1.2.tsx:45
+- **Problem**: Using array index as React key in TodoList example
+- **Evidence**: `{todos.map((todo, i) => <Todo key={i} />)}`
+- **Impact**: Will cause state bugs when users reorder todos
+- **Fix**: Use unique ID: `<Todo key={todo.id} />`
+```
+
+### Documentation References
+
+For complete details, see:
+- **Agent definition**: `.claude/agents/critical-auditor.md`
+- **Comprehensive guide**: `docs/AGENT_FEEDBACK_LOOP_DOCUMENTATION.md`
+- **Enhancement summary**: `docs/implementation-reports/CRITICAL_AUDITOR_ADDITION.md`
+- **Example audits**: `audits/REACT_COURSE_CRITICAL_AUDIT_ROUND_[1-3].md`
+
+### Summary: Your Responsibility
+
+**You MUST proactively use the critical-auditor when:**
+1. User says any variation of "audit", "review critically", or "is this ready?"
+2. Before finalizing any major course content or code
+3. After other agents complete work (verify their claims)
+4. When quality and accuracy are mission-critical
+
+**Remember:** The critical-auditor prevents production disasters and maintains the highest quality standards. Use it liberally. Trust, but verify. Then verify again.
+
+---
 
 **Remember:** This curriculum is designed to change lives. Every improvement makes a difference. Every clear explanation helps someone succeed. Every accurate code example prevents frustration.
 

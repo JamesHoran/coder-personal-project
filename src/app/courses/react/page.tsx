@@ -1,34 +1,50 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import reactCourse from "@/data/courses/react-course";
+import {
+  allPhases,
+  COURSE_INFO
+} from "@/data/courses/react-unified/course-metadata";
+import { levelThresholds } from "@/data/courses/react-unified/gamification";
+import { allLessons } from "@/data/courses/react-unified";
 
 export default function ReactCoursePage() {
+  const totalXP = allPhases.reduce((sum, phase) =>
+    sum + phase.modules.reduce((mSum, module) =>
+      mSum + module.projects.reduce((pSum, p) => pSum + p.xp, 0) +
+      module.challenges.reduce((cSum, c) => cSum + c.xp, 0), 0), 0);
+
   return (
     <div className="container mx-auto py-8 px-4">
       {/* Course Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">{reactCourse.title}</h1>
+        <h1 className="text-4xl font-bold mb-4">{COURSE_INFO.title}</h1>
         <p className="text-lg text-muted-foreground mb-4">
-          {reactCourse.description}
+          {COURSE_INFO.description}
         </p>
         <div className="flex gap-4 items-center flex-wrap">
           <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">Lessons:</span>
+            <span className="text-sm text-muted-foreground">
+              {allLessons.length} interactive lessons
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Duration:</span>
             <span className="text-sm text-muted-foreground">
-              {reactCourse.duration / 60} hours
+              {COURSE_INFO.estimatedHours}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Level:</span>
             <span className="text-sm text-muted-foreground capitalize">
-              {reactCourse.level}
+              {COURSE_INFO.level}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Total XP:</span>
             <span className="text-sm text-muted-foreground font-bold">
-              {reactCourse.totalXP}
+              {totalXP}
             </span>
           </div>
         </div>
@@ -38,7 +54,7 @@ export default function ReactCoursePage() {
       <Card className="p-6 mb-8">
         <h2 className="text-2xl font-bold mb-4">Level Progression</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {reactCourse.levelThresholds
+          {levelThresholds
             .filter((_, index) => index % 5 === 0)
             .map((threshold) => (
               <div
@@ -59,7 +75,7 @@ export default function ReactCoursePage() {
 
       {/* Phases */}
       <div className="space-y-8">
-        {reactCourse.phases.map((phase) => {
+        {allPhases.map((phase) => {
           const phaseXP = phase.modules.reduce((sum, module) => {
             const projectXP = module.projects.reduce(
               (pSum, p) => pSum + p.xp,
@@ -156,13 +172,13 @@ export default function ReactCoursePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-3xl font-bold text-primary">
-              {reactCourse.phases.length}
+              {allPhases.length}
             </div>
             <div className="text-sm text-muted-foreground">Phases</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-primary">
-              {reactCourse.phases.reduce(
+              {allPhases.reduce(
                 (sum, phase) => sum + phase.modules.length,
                 0
               )}
@@ -171,7 +187,7 @@ export default function ReactCoursePage() {
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-primary">
-              {reactCourse.phases.reduce(
+              {allPhases.reduce(
                 (sum, phase) =>
                   sum +
                   phase.modules.reduce(
@@ -185,7 +201,7 @@ export default function ReactCoursePage() {
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-primary">
-              {reactCourse.phases.reduce(
+              {allPhases.reduce(
                 (sum, phase) =>
                   sum +
                   phase.modules.reduce(

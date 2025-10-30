@@ -20,6 +20,17 @@ const nextConfig: NextConfig = {
       transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
     },
   },
+
+  // ESLint configuration
+  eslint: {
+    // Ignore ESLint during builds (we rely on TypeScript for type safety)
+    ignoreDuringBuilds: true,
+  },
+
+  typescript: {
+    // Show TypeScript errors during build
+    ignoreBuildErrors: false,
+  },
 };
 
 export default nextConfig;

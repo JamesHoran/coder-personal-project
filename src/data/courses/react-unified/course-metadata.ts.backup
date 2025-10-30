@@ -1,0 +1,603 @@
+/**
+ * React Unified Course - Metadata
+ *
+ * Extracted from react-course.ts - Consolidates quest names, module descriptions,
+ * and phase information for the unified React course structure.
+ *
+ * Total: 13 modules across 3 phases
+ * Lessons: 155 interactive lessons
+ */
+
+import type { Phase, Module } from '@/types';
+
+export const COURSE_INFO = {
+  id: 'react-unified',
+  title: 'React Complete Course',
+  slug: 'react',
+  description: 'Modern React Development for Interview Success & Production Excellence. Transform from beginner to production-ready React developer.',
+  category: 'Frontend' as const,
+  level: 'All Levels' as const,
+  totalLessons: 155,
+  totalModules: 13,
+  totalPhases: 3,
+  estimatedHours: '60-75 hours',
+};
+
+/**
+ * Phase 1: React Foundations (6 modules)
+ * Level: React Apprentice
+ * Duration: 15-20 hours
+ */
+export const phase1Metadata: Phase = {
+  id: 'phase-1',
+  courseId: 'react-unified',
+  number: 1,
+  title: 'React Foundations',
+  description: 'Master core React concepts and build your first interactive applications',
+  level: 'React Apprentice',
+  duration: '15-20 hours',
+  modules: [
+    {
+      id: 'module-1-1',
+      phaseId: 'phase-1',
+      number: '1.1',
+      title: 'React Fundamentals',
+      questName: 'The Component Journey',
+      description: 'Master the foundational concepts of React including components, JSX, props, and events.',
+      learningObjectives: [
+        'Understand React components and JSX syntax',
+        'Master props for component communication',
+        'Handle events in React applications',
+        'Build reusable component structures'
+      ],
+      projects: [
+        {
+          id: 'project-1-1',
+          name: 'Component Gallery',
+          description: 'Build a gallery of reusable UI components with props',
+          xp: 150,
+          successCriteria: ['Create 5 reusable components', 'Use props effectively', 'Handle events properly'],
+          timeEstimate: '2-3 hours'
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-1-1-1',
+          name: 'Prop Master Challenge',
+          description: 'Pass 10 different prop types successfully',
+          xp: 100,
+          difficulty: 'beginner' as const,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-1-2',
+      phaseId: 'phase-1',
+      number: '1.2',
+      title: 'State & Lifecycle with Hooks',
+      questName: 'Making Components Come Alive',
+      description: 'Master state management and side effects with useState and useEffect hooks.',
+      learningObjectives: [
+        'Understand and use useState hook',
+        'Master useEffect for side effects',
+        'Handle component lifecycle',
+        'Manage complex state updates'
+      ],
+      projects: [
+        {
+          id: 'project-1-2',
+          name: 'Interactive Counter App',
+          description: 'Build a counter with multiple features using state',
+          xp: 150,
+          successCriteria: ['Use useState', 'Handle multiple state values', 'Implement increment/decrement'],
+          timeEstimate: '2-3 hours'
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-1-2-1',
+          name: 'State Management Pro',
+          description: 'Handle 10 different state scenarios',
+          xp: 100,
+          difficulty: 'beginner' as const,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-1-3',
+      phaseId: 'phase-1',
+      number: '1.3',
+      title: 'Event Handling',
+      questName: 'Interactive Master',
+      description: 'Master event handling patterns in React applications.',
+      learningObjectives: [
+        'Handle user interactions effectively',
+        'Understand event delegation in React',
+        'Prevent default behaviors',
+        'Pass event data between components'
+      ],
+      projects: [
+        {
+          id: 'project-1-3',
+          title: 'Interactive Button Suite',
+          description: 'Build various interactive buttons with event handlers',
+          xp: 150,
+          type: 'completion',
+          requirements: ['Multiple event types', 'Event delegation', 'Proper event handling']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-1-3-1',
+          title: 'Event Handler Expert',
+          description: 'Handle 10 different event types',
+          xp: 100,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-1-4',
+      phaseId: 'phase-1',
+      number: '1.4',
+      title: 'Conditional Rendering',
+      questName: 'The Logic Weaver',
+      description: 'Master conditional rendering patterns and dynamic UI updates.',
+      learningObjectives: [
+        'Use conditional rendering techniques',
+        'Implement ternary operators in JSX',
+        'Handle loading and error states',
+        'Build dynamic user interfaces'
+      ],
+      projects: [
+        {
+          id: 'project-1-4',
+          title: 'Dynamic Content Display',
+          description: 'Build UI that changes based on conditions',
+          xp: 150,
+          type: 'completion',
+          requirements: ['Multiple conditional patterns', 'Loading states', 'Error handling']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-1-4-1',
+          title: 'Conditional Master',
+          description: 'Implement 10 conditional rendering patterns',
+          xp: 100,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-1-5',
+      phaseId: 'phase-1',
+      number: '1.5',
+      title: 'Lists & Keys',
+      questName: 'Array Architect',
+      description: 'Master rendering lists efficiently with proper key management.',
+      learningObjectives: [
+        'Render arrays of data efficiently',
+        'Understand the importance of keys',
+        'Handle dynamic list updates',
+        'Implement filtering and sorting'
+      ],
+      projects: [
+        {
+          id: 'project-1-5',
+          title: 'Dynamic List Manager',
+          description: 'Build a list component with add/remove/filter',
+          xp: 150,
+          type: 'completion',
+          requirements: ['Proper key usage', 'Dynamic updates', 'List manipulation']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-1-5-1',
+          title: 'List Virtuoso',
+          description: 'Handle complex list operations',
+          xp: 100,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-1-6',
+      phaseId: 'phase-1',
+      number: '1.6',
+      title: 'Phase 1 Capstone: Meme Generator',
+      questName: 'Foundation Boss Battle',
+      description: 'Build a complete meme generator application using all Phase 1 concepts.',
+      learningObjectives: [
+        'Integrate all Phase 1 concepts',
+        'Build a complete React application',
+        'Handle API integration',
+        'Create polished user experience'
+      ],
+      projects: [
+        {
+          id: 'project-1-6-capstone',
+          title: 'Meme Generator App',
+          description: 'Full-featured meme generator with text overlay and image selection',
+          xp: 500,
+          type: 'boss',
+          requirements: [
+            'Fetch images from API',
+            'Add text overlays',
+            'Handle user input',
+            'Export final meme',
+            'Responsive design'
+          ]
+        }
+      ],
+      challenges: []
+    }
+  ]
+};
+
+/**
+ * Phase 2: Intermediate React (5 modules)
+ * Level: React Developer
+ * Duration: 20-25 hours
+ */
+export const phase2Metadata: Phase = {
+  id: 'phase-2',
+  courseId: 'react-unified',
+  number: 2,
+  title: 'Intermediate React',
+  description: 'Master advanced hooks, patterns, and real-world application development',
+  level: 'React Developer',
+  duration: '20-25 hours',
+  modules: [
+    {
+      id: 'module-2-1',
+      phaseId: 'phase-2',
+      number: '2.1',
+      title: 'Advanced Hooks Mastery',
+      questName: 'Hook Sorcerer',
+      description: 'Master all React hooks including useContext, useReducer, useCallback, useMemo, and custom hooks.',
+      learningObjectives: [
+        'Master useContext for global state',
+        'Use useReducer for complex state logic',
+        'Optimize with useCallback and useMemo',
+        'Create custom hooks for reusability'
+      ],
+      projects: [
+        {
+          id: 'project-2-1',
+          title: 'Theme System with Context',
+          description: 'Build a complete theme switching system',
+          xp: 200,
+          type: 'completion',
+          requirements: ['useContext implementation', 'Theme persistence', 'Custom hooks']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-2-1-1',
+          title: 'Custom Hook Master',
+          description: 'Create 5 reusable custom hooks',
+          xp: 150,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-2-2',
+      phaseId: 'phase-2',
+      number: '2.2',
+      title: 'Component Patterns & Composition',
+      questName: 'Pattern Master',
+      description: 'Master advanced component patterns including compound components, render props, and HOCs.',
+      learningObjectives: [
+        'Build compound components',
+        'Implement render props pattern',
+        'Create Higher-Order Components',
+        'Use composition effectively'
+      ],
+      projects: [
+        {
+          id: 'project-2-2',
+          title: 'Component Library',
+          description: 'Build reusable components with advanced patterns',
+          xp: 200,
+          type: 'completion',
+          requirements: ['Multiple patterns', 'Reusable components', 'Clean API design']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-2-2-1',
+          title: 'Pattern Architect',
+          description: 'Implement 5 different component patterns',
+          xp: 150,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-2-3',
+      phaseId: 'phase-2',
+      number: '2.3',
+      title: 'Performance Optimization',
+      questName: 'Speed Demon',
+      description: 'Master React performance optimization techniques including memoization, code splitting, and virtualization.',
+      learningObjectives: [
+        'Optimize with React.memo',
+        'Implement code splitting',
+        'Use lazy loading effectively',
+        'Profile and measure performance'
+      ],
+      projects: [
+        {
+          id: 'project-2-3',
+          title: 'Optimized Dashboard',
+          description: 'Build a high-performance dashboard with optimization techniques',
+          xp: 200,
+          type: 'completion',
+          requirements: ['Memoization', 'Code splitting', 'Performance metrics']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-2-3-1',
+          title: 'Performance Pro',
+          description: 'Optimize 10 different scenarios',
+          xp: 150,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-2-4',
+      phaseId: 'phase-2',
+      number: '2.4',
+      title: 'React Router & Navigation',
+      questName: 'Navigation Navigator',
+      description: 'Master client-side routing with React Router including dynamic routes and protected routes.',
+      learningObjectives: [
+        'Set up React Router',
+        'Create dynamic routes',
+        'Implement protected routes',
+        'Handle navigation programmatically'
+      ],
+      projects: [
+        {
+          id: 'project-2-4',
+          title: 'Multi-Page Application',
+          description: 'Build a complete app with routing and navigation',
+          xp: 200,
+          type: 'completion',
+          requirements: ['Multiple routes', 'Dynamic parameters', 'Protected routes']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-2-4-1',
+          title: 'Routing Master',
+          description: 'Implement complex routing scenarios',
+          xp: 150,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-2-5',
+      phaseId: 'phase-2',
+      number: '2.5',
+      title: 'Phase 2 Capstone: Recipe App',
+      questName: 'Intermediate Boss Battle',
+      description: 'Build a complete recipe application with search, filters, and favorites.',
+      learningObjectives: [
+        'Integrate all Phase 2 concepts',
+        'Build production-ready application',
+        'Handle real API data',
+        'Implement complex features'
+      ],
+      projects: [
+        {
+          id: 'project-2-5-capstone',
+          title: 'Recipe Discovery App',
+          description: 'Full-featured recipe app with search, filters, and favorites',
+          xp: 600,
+          type: 'boss',
+          requirements: [
+            'Recipe search with API',
+            'Advanced filtering',
+            'Favorites system',
+            'Recipe details page',
+            'Performance optimized',
+            'Responsive design'
+          ]
+        }
+      ],
+      challenges: []
+    }
+  ]
+};
+
+/**
+ * Phase 3: Advanced React (4 modules)
+ * Level: React Expert
+ * Duration: 25-30 hours
+ */
+export const phase3Metadata: Phase = {
+  id: 'phase-3',
+  courseId: 'react-unified',
+  number: 3,
+  title: 'Advanced React',
+  description: 'Master enterprise patterns, TypeScript, testing, and production-ready applications',
+  level: 'React Expert',
+  duration: '25-30 hours',
+  modules: [
+    {
+      id: 'module-3-1',
+      phaseId: 'phase-3',
+      number: '3.1',
+      title: 'State Management at Scale',
+      questName: 'State Architect',
+      description: 'Master enterprise state management with Redux Toolkit, Zustand, and Recoil.',
+      learningObjectives: [
+        'Implement Redux Toolkit',
+        'Use Zustand for lightweight state',
+        'Master Recoil patterns',
+        'Choose the right state solution'
+      ],
+      projects: [
+        {
+          id: 'project-3-1',
+          title: 'Enterprise Todo App',
+          description: 'Build complex app with enterprise state management',
+          xp: 250,
+          type: 'completion',
+          requirements: ['Redux Toolkit', 'Async actions', 'Normalized state']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-3-1-1',
+          title: 'State Management Expert',
+          description: 'Implement state management in 5 scenarios',
+          xp: 200,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-3-2',
+      phaseId: 'phase-3',
+      number: '3.2',
+      title: 'React & TypeScript',
+      questName: 'Type-Safe React Master',
+      description: 'Master TypeScript with React for type-safe components and applications.',
+      learningObjectives: [
+        'Type React components properly',
+        'Use TypeScript with hooks',
+        'Create generic components',
+        'Master advanced TypeScript patterns'
+      ],
+      projects: [
+        {
+          id: 'project-3-2',
+          title: 'Type-Safe Component Library',
+          description: 'Build fully typed component library',
+          xp: 250,
+          type: 'completion',
+          requirements: ['All components typed', 'Generic components', 'Zero type errors']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-3-2-1',
+          title: 'TypeScript Wizard',
+          description: 'Create type-safe solutions for complex scenarios',
+          xp: 200,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-3-3',
+      phaseId: 'phase-3',
+      number: '3.3',
+      title: 'Testing React Applications',
+      questName: 'Quality Guardian',
+      description: 'Master testing with React Testing Library, Jest, and Playwright for E2E tests.',
+      learningObjectives: [
+        'Write unit tests with React Testing Library',
+        'Test custom hooks',
+        'Implement integration tests',
+        'Create E2E tests with Playwright'
+      ],
+      projects: [
+        {
+          id: 'project-3-3',
+          title: 'Fully Tested Application',
+          description: 'Build app with comprehensive test coverage',
+          xp: 250,
+          type: 'completion',
+          requirements: ['80%+ coverage', 'Unit + integration tests', 'E2E tests']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-3-3-1',
+          title: 'Testing Master',
+          description: 'Write tests for complex scenarios',
+          xp: 200,
+          type: 'completion'
+        }
+      ]
+    },
+    {
+      id: 'module-3-4',
+      phaseId: 'phase-3',
+      number: '3.4',
+      title: 'Production Patterns & React 19',
+      questName: 'Production Hero',
+      description: 'Master production patterns, error boundaries, and React 19 features.',
+      learningObjectives: [
+        'Implement error boundaries',
+        'Use Suspense effectively',
+        'Master React 19 features',
+        'Build production-ready apps'
+      ],
+      projects: [
+        {
+          id: 'project-3-4',
+          title: 'Production-Ready Application',
+          description: 'Build enterprise-grade application',
+          xp: 250,
+          type: 'completion',
+          requirements: ['Error handling', 'Suspense', 'React 19 features', 'Production deployment']
+        }
+      ],
+      challenges: [
+        {
+          id: 'challenge-3-4-1',
+          title: 'Production Expert',
+          description: 'Implement production patterns',
+          xp: 200,
+          type: 'completion'
+        }
+      ]
+    }
+  ]
+};
+
+/**
+ * All phases combined
+ */
+export const allPhases: Phase[] = [
+  phase1Metadata,
+  phase2Metadata,
+  phase3Metadata
+];
+
+/**
+ * Helper function to get module by ID
+ */
+export function getModuleMetadata(moduleId: string): Module | undefined {
+  for (const phase of allPhases) {
+    const module = phase.modules.find(m => m.id === moduleId);
+    if (module) return module;
+  }
+  return undefined;
+}
+
+/**
+ * Helper function to get phase by ID
+ */
+export function getPhaseMetadata(phaseId: string): Phase | undefined {
+  return allPhases.find(p => p.id === phaseId);
+}
+
+/**
+ * Get all modules flattened
+ */
+export function getAllModules(): Module[] {
+  return allPhases.flatMap(phase => phase.modules);
+}

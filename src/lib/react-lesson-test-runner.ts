@@ -6,7 +6,6 @@
  */
 
 import { render, screen, fireEvent, waitFor, RenderResult } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { TestCase, TestResult } from '@/types';
 import React from 'react';
 
@@ -24,15 +23,43 @@ interface TestContext {
 }
 
 /**
- * Compile user code into a React component
- * This function safely evaluates the user's code and extracts the component
+ * Transpile JSX code to JavaScript using server-side API
  */
-export function compileUserCode(code: string): React.ComponentType<any> | null {
+async function transpileJSX(code: string): Promise<string> {
+  const response = await fetch('/api/transpile-jsx', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Transpilation failed: ${error.details || error.error}`);
+  }
+
+  const result = await response.json();
+
+  // Validate transpilation success
+  if (!result.success) {
+    throw new Error(`Transpilation failed: ${result.details || result.error || 'Unknown error'}`);
+  }
+
+  return result.data.code;
+}
+
+/**
+ * Compile user code into a React component
+ * This function transpiles JSX and safely evaluates the user's code
+ */
+export async function compileUserCode(code: string): Promise<React.ComponentType<any> | null> {
   try {
-    // Create a safe evaluation context
-    // Note: In production, this should use a sandboxed environment
+    // Step 1: Transpile JSX to JavaScript
+    // SWC will handle: import statements → require(), export default → module.exports, JSX → React.createElement()
+    const transpiledCode = await transpileJSX(code);
+
+    // Step 2: Create safe evaluation context
     const wrappedCode = `
-      ${code}
+      ${transpiledCode}
 
       // Return the default export or the last declared component
       if (typeof module !== 'undefined' && module.exports) {
@@ -40,10 +67,7 @@ export function compileUserCode(code: string): React.ComponentType<any> | null {
       }
     `;
 
-    // This is a simplified version - in production you would use:
-    // - A sandboxed iframe
-    // - Web Workers with restricted permissions
-    // - A server-side Node.js VM with timeouts
+    // Step 3: Execute transpiled code with React context
     const compiledFunction = new Function('React', 'require', 'exports', 'module', wrappedCode);
 
     // Mock module system
@@ -67,7 +91,8 @@ export function compileUserCode(code: string): React.ComponentType<any> | null {
     return null;
   } catch (error) {
     console.error('Code compilation error:', error);
-    return null;
+    // Re-throw the error so it can be shown to the user
+    throw error;
   }
 }
 
@@ -87,7 +112,7 @@ export async function executeTestCase(
   try {
     // If component is not compiled, try to compile it
     if (!component) {
-      component = compileUserCode(userCode);
+      component = await compileUserCode(userCode);
     }
 
     // Create test context
@@ -206,21 +231,29 @@ function createTestFunction(testString: string, context: TestContext): () => Pro
  */
 export async function runAllTests(
   userCode: string,
-  testCases: TestCase[]
+  testCases: TestCase[],
+  stepId: string
 ): Promise<TestResult> {
-  // Compile the code once
-  const component = compileUserCode(userCode);
+  // Compile the code once (now async with JSX transpilation)
+  let component: React.ComponentType<any> | null = null;
+  let compilationError: string | null = null;
+
+  try {
+    component = await compileUserCode(userCode);
+  } catch (error) {
+    compilationError = error instanceof Error ? error.message : String(error);
+  }
 
   if (!component && testCases.some(tc => tc.testFunction.includes('render'))) {
     return {
-      stepId: 'unknown',
+      stepId,
       passed: false,
       results: [
         {
           testId: 'compilation',
           description: 'Code compilation',
           passed: false,
-          errorMessage: 'Failed to compile the code. Make sure you export a valid React component.',
+          errorMessage: compilationError || 'Failed to compile the code. Make sure you export a valid React component.',
         },
       ],
     };
@@ -235,7 +268,7 @@ export async function runAllTests(
   const allPassed = results.every(result => result.passed);
 
   return {
-    stepId: 'current-step',
+    stepId,
     passed: allPassed,
     results,
   };

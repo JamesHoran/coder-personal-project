@@ -66,11 +66,17 @@ export function InteractiveLessonPlayer({
 
     try {
       const userCode = code[currentStep.id] || currentStep.starterCode;
-      const results = await runTests(
-        userCode,
-        currentStep.testCases,
-        currentStep.id
-      );
+
+      // Select appropriate test runner based on lesson language
+      let results;
+      if (currentStep.language === 'jsx' || currentStep.language === 'tsx') {
+        // Dynamically import React test runner only when needed (client-side only)
+        const { runAllTests: runReactTests } = await import('@/lib/react-lesson-test-runner');
+        results = await runReactTests(userCode, currentStep.testCases, currentStep.id);
+      } else {
+        // Use generic test runner for TypeScript/JavaScript
+        results = await runTests(userCode, currentStep.testCases, currentStep.id);
+      }
 
       setTestResults(results);
 

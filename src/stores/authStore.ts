@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { signIn, signOut } from "next-auth/react";
 import type { User } from "@/types";
 
 interface AuthState {
@@ -8,7 +9,7 @@ interface AuthState {
   setUser: (user: User | null) => void;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, displayName: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -22,24 +23,42 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: !!user,
     }),
 
-  login: async (email) => {
+  login: async (email, password) => {
     set({ isLoading: true });
     try {
-      // TODO: Implement actual auth logic
-      // This is a mock implementation
-      const mockUser: User = {
-        id: "be3d97ac-e48a-4c37-8c2b-5cff1710d785", // Demo User UUID
-        email: "demo@example.com",
-        displayName: "Demo User",
-        role: "student",
-        createdAt: new Date().toISOString(),
-      };
-
-      set({
-        user: mockUser,
-        isAuthenticated: true,
-        isLoading: false,
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
+
+      if (result?.error) {
+        set({ isLoading: false });
+        throw new Error(result.error);
+      }
+
+      // Fetch the user session after successful login
+      const response = await fetch("/api/auth/session");
+      const session = await response.json();
+
+      if (session?.user) {
+        const user: User = {
+          id: session.user.id,
+          email: session.user.email,
+          displayName: session.user.name || session.user.email,
+          role: session.user.role || "student",
+          createdAt: new Date().toISOString(),
+        };
+
+        set({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } else {
+        set({ isLoading: false });
+        throw new Error("Failed to fetch user session");
+      }
     } catch (error) {
       set({ isLoading: false });
       throw error;
@@ -49,27 +68,67 @@ export const useAuthStore = create<AuthState>((set) => ({
   signup: async (email, password, displayName) => {
     set({ isLoading: true });
     try {
-      // TODO: Implement actual auth logic
-      const mockUser: User = {
-        id: "be3d97ac-e48a-4c37-8c2b-5cff1710d785", // Demo User UUID
-        email: "demo@example.com",
-        displayName: "Demo User",
-        role: "student",
-        createdAt: new Date().toISOString(),
-      };
-
-      set({
-        user: mockUser,
-        isAuthenticated: true,
-        isLoading: false,
+      // Call the signup API endpoint
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name: displayName,
+        }),
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Signup failed");
+      }
+
+      // After successful signup, automatically log in
+      const loginResult = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (loginResult?.error) {
+        set({ isLoading: false });
+        throw new Error(loginResult.error);
+      }
+
+      // Fetch the user session after successful login
+      const sessionResponse = await fetch("/api/auth/session");
+      const session = await sessionResponse.json();
+
+      if (session?.user) {
+        const user: User = {
+          id: session.user.id,
+          email: session.user.email,
+          displayName: session.user.name || session.user.email,
+          role: session.user.role || "student",
+          createdAt: new Date().toISOString(),
+        };
+
+        set({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } else {
+        set({ isLoading: false });
+        throw new Error("Failed to fetch user session");
+      }
     } catch (error) {
       set({ isLoading: false });
       throw error;
     }
   },
 
-  logout: () => {
+  logout: async () => {
+    await signOut({ redirect: false });
     set({
       user: null,
       isAuthenticated: false,

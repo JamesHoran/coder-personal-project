@@ -347,73 +347,73 @@ function UserInfo({ name, email, age }) {
 
 ## Your Task
 
-Create a component named \`ProductCard\` that uses **props destructuring**:
-1. Destructure \`title\`, \`price\`, and \`inStock\` from props
-2. Display the title in an \`<h3>\`
-3. Display the price in a \`<p>\` with the text "Price: $" followed by the price value
-4. Display the stock status in a \`<p>\` with the text "In Stock: {inStock ? 'Yes' : 'No'}"
-5. Wrap everything in a \`<div>\` with className "product-card"
+Create a component named \`PokemonCard\` that uses **props destructuring**:
+1. Destructure \`name\`, \`power\`, and \`legendary\` from props
+2. Display the name in an \`<h3>\`
+3. Display the power in a \`<p>\` with the text "Power Level: " followed by the power value
+4. Display legendary status in a \`<p>\` with the text "Legendary: {legendary ? '⭐ Yes!' : 'No'}"
+5. Wrap everything in a \`<div>\` with className "pokemon-card"
         `,
-        hint: "Use destructuring in the function parameter: function ProductCard({ title, price, inStock }). Use a ternary operator for the conditional text.",
+        hint: "Use destructuring in the function parameter: function PokemonCard({ name, power, legendary }). Use a ternary operator with emojis for the legendary status!",
         starterCode: `import React from 'react';
 
-function ProductCard(/* destructure props here */) {
+function PokemonCard(/* destructure props here */) {
   return (
     // Your JSX here
   );
 }
 
-export default ProductCard;`,
+export default PokemonCard;`,
         solution: `import React from 'react';
 
-function ProductCard({ title, price, inStock }) {
+function PokemonCard({ name, power, legendary }) {
   return (
-    <div className="product-card">
-      <h3>{title}</h3>
-      <p>Price: {price}</p>
-      <p>In Stock: {inStock ? 'Yes' : 'No'}</p>
+    <div className="pokemon-card">
+      <h3>{name}</h3>
+      <p>Power Level: {power}</p>
+      <p>Legendary: {legendary ? '⭐ Yes!' : 'No'}</p>
     </div>
   );
 }
 
-export default ProductCard;`,
+export default PokemonCard;`,
         testCases: [
           {
             id: "test-1",
             description: "The component should use props destructuring",
-            testFunction: `code.includes('function ProductCard({') && code.includes('title') && code.includes('price') && code.includes('inStock')`,
+            testFunction: `code.includes('function PokemonCard({') && code.includes('name') && code.includes('power') && code.includes('legendary')`,
           },
           {
             id: "test-2",
-            description: "The title should be displayed in an h3 element",
+            description: "The name should be displayed in an h3 element",
             testFunction: `
-              const { container } = render(<ProductCard title="Laptop" price={999} inStock={true} />);
+              const { container } = render(<PokemonCard name="Pikachu" power={320} legendary={false} />);
               const h3 = container.querySelector('h3');
-              h3 !== null && h3.textContent === 'Laptop'
+              h3 !== null && h3.textContent === 'Pikachu'
             `,
           },
           {
             id: "test-3",
-            description: "The price should be displayed with 'Price: $' prefix",
+            description: "The power should be displayed with 'Power Level: ' prefix",
             testFunction: `
-              const { getByText } = render(<ProductCard title="Laptop" price={999} inStock={true} />);
-              getByText('Price: $999') !== null
+              const { getByText } = render(<PokemonCard name="Pikachu" power={320} legendary={false} />);
+              getByText('Power Level: 320') !== null
             `,
           },
           {
             id: "test-4",
-            description: "Should show 'In Stock: Yes' when inStock is true",
+            description: "Should show 'Legendary: ⭐ Yes!' when legendary is true",
             testFunction: `
-              const { getByText } = render(<ProductCard title="Laptop" price={999} inStock={true} />);
-              getByText('In Stock: Yes') !== null
+              const { getByText } = render(<PokemonCard name="Mewtwo" power={850} legendary={true} />);
+              getByText(/Legendary:.*Yes/) !== null
             `,
           },
           {
             id: "test-5",
-            description: "Should show 'In Stock: No' when inStock is false",
+            description: "Should show 'Legendary: No' when legendary is false",
             testFunction: `
-              const { getByText } = render(<ProductCard title="Laptop" price={999} inStock={false} />);
-              getByText('In Stock: No') !== null
+              const { getByText } = render(<PokemonCard name="Pikachu" power={320} legendary={false} />);
+              getByText('Legendary: No') !== null
             `,
           },
           {

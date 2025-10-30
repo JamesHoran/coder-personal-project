@@ -12,15 +12,18 @@ interface ModuleContentProps {
   module: Module
   phase: Phase
   moduleXP: number
+  courseId: string
 }
 
-export function ModuleContent({ module: foundModule, phase, moduleXP }: ModuleContentProps) {
+export function ModuleContent({ module: foundModule, phase, moduleXP, courseId }: ModuleContentProps) {
   const { completedProjects, completedChallenges, loadProgress, isLoading } = useProgress()
 
   useEffect(() => {
-    // Load progress for the React course
-    loadProgress('react-course')
-  }, [loadProgress])
+    // Load progress for the current course
+    if (courseId) {
+      loadProgress(courseId)
+    }
+  }, [loadProgress, courseId])
 
   const bossChallenge = foundModule.challenges.find((c) => c.type === 'boss')
 
@@ -96,7 +99,12 @@ export function ModuleContent({ module: foundModule, phase, moduleXP }: ModuleCo
                     <span className="text-sm text-muted-foreground">
                       Time Estimate: {project.timeEstimate}
                     </span>
-                    <ProjectButton projectId={project.id} projectXP={project.xp} />
+                    <ProjectButton project={{
+                      ...project,
+                      instructions: `Complete the ${project.name} project by following these steps:\n\n${project.successCriteria.map((c, i) => `${i + 1}. ${c}`).join('\n')}`,
+                      deliverables: project.successCriteria,
+                      estimatedTime: project.timeEstimate,
+                    }} />
                   </div>
                 </Card>
               )
@@ -138,7 +146,20 @@ export function ModuleContent({ module: foundModule, phase, moduleXP }: ModuleCo
                       >
                         {challenge.difficulty}
                       </span>
-                      <ChallengeButton challengeId={challenge.id} challengeXP={challenge.xp} />
+                      <ChallengeButton challenge={{
+                        ...challenge,
+                        instructions: `${challenge.description}\n\nComplete this challenge to earn ${challenge.xp} XP.`,
+                        starterCode: `// ${challenge.name}\n// ${challenge.description}\n\n// Write your code here\n`,
+                        testCases: [
+                          {
+                            id: `${challenge.id}-test-1`,
+                            description: 'Basic functionality test',
+                            testFunction: '() => true',
+                          }
+                        ],
+                        language: 'javascript',
+                        hints: [`This is a ${challenge.difficulty} challenge.`],
+                      }} />
                     </div>
                   </Card>
                 )
@@ -169,8 +190,20 @@ export function ModuleContent({ module: foundModule, phase, moduleXP }: ModuleCo
                 </span>
               </div>
               <ChallengeButton
-                challengeId={bossChallenge.id}
-                challengeXP={bossChallenge.xp}
+                challenge={{
+                  ...bossChallenge,
+                  instructions: `${bossChallenge.description}\n\nThis is a BOSS CHALLENGE! Complete it to earn ${bossChallenge.xp} XP.`,
+                  starterCode: `// ${bossChallenge.name}\n// ${bossChallenge.description}\n\n// Write your code here\n`,
+                  testCases: [
+                    {
+                      id: `${bossChallenge.id}-test-1`,
+                      description: 'Boss challenge test',
+                      testFunction: '() => true',
+                    }
+                  ],
+                  language: 'javascript',
+                  hints: [`This is a ${bossChallenge.difficulty} BOSS challenge!`],
+                }}
                 isBoss={true}
                 size="lg"
                 variant="default"

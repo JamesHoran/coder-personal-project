@@ -73,7 +73,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
           </div>
         </div>
 
-        <ModuleContent module={foundModule} phase={phase} moduleXP={moduleXP} />
+        <ModuleContent module={foundModule} phase={phase} moduleXP={moduleXP} courseId="react-course" />
       </div>
     </ProgressProvider>
   );

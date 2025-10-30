@@ -89,7 +89,7 @@ export default function LearnPage() {
   }
 
   const handleComplete = async () => {
-    if (!lesson || submitting) return
+    if (!lesson || submitting || !user?.id) return
 
     setSubmitting(true)
 
@@ -99,7 +99,7 @@ export default function LearnPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: user?.id || 'be3d97ac-e48a-4c37-8c2b-5cff1710d785',
+          userId: user.id,
           lessonId: lesson.id,
         }),
       })

@@ -107,6 +107,14 @@ export default function CodeEditor({
       return
     }
 
+    if (!user?.id) {
+      setOutput((prev) => [
+        ...prev,
+        '⚠️  You must be logged in to submit',
+      ])
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -115,7 +123,7 @@ export default function CodeEditor({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code,
-          userId: user?.id || 'be3d97ac-e48a-4c37-8c2b-5cff1710d785',
+          userId: user.id,
         }),
       })
 

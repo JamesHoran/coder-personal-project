@@ -5,12 +5,56 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gitCourse, gitCourseBadges } from "@/data/gitCourse";
 import { Trophy, Star, Clock, Zap, Target, BookOpen, Award, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ProjectButton } from "@/components/course/ProjectButton";
+import { ChallengeButton } from "@/components/course/ChallengeButton";
+import { useEnrollment } from "@/hooks/useEnrollment";
+import { EnrollmentModal } from "@/components/modals/EnrollmentModal";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
+
+// This is the database course ID for the Git course (from seed data)
+const GIT_COURSE_DB_ID = "a4663271-37d8-4ee9-8e82-6b195c87ccaa";
 
 export default function GitCoursePage() {
   const [selectedPhase, setSelectedPhase] = useState(gitCourse.phases[0].id);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [showEnrollModal, setShowEnrollModal] = useState(false);
+  const { enroll, checkEnrollment, isEnrolling, error: enrollmentError } = useEnrollment();
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
 
   const currentPhase = gitCourse.phases.find(p => p.id === selectedPhase);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      checkEnrollmentStatus();
+    }
+  }, [isAuthenticated]);
+
+  const checkEnrollmentStatus = async () => {
+    const enrolled = await checkEnrollment(GIT_COURSE_DB_ID);
+    setIsEnrolled(enrolled);
+  };
+
+  const handleEnrollClick = () => {
+    if (!isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
+    setShowEnrollModal(true);
+  };
+
+  const handleEnroll = async () => {
+    const result = await enroll(GIT_COURSE_DB_ID);
+
+    if (result.success) {
+      setShowEnrollModal(false);
+      setIsEnrolled(true);
+      // Optionally navigate to course learning page
+      router.push(`/courses/${GIT_COURSE_DB_ID}/learn`);
+    }
+  };
 
   return (
     <div className="min-h-screen py-8">
@@ -41,12 +85,23 @@ export default function GitCoursePage() {
               </div>
 
               <div className="flex gap-4">
-                <Button size="lg" className="text-lg px-8">
-                  Enroll Now - ${gitCourse.price}
-                </Button>
-                <Button size="lg" variant="outline" className="text-lg">
-                  Preview Course
-                </Button>
+                {isEnrolled ? (
+                  <Button
+                    size="lg"
+                    className="text-lg px-8"
+                    onClick={() => router.push(`/courses/${GIT_COURSE_DB_ID}/learn`)}
+                  >
+                    Continue Learning
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="text-lg px-8"
+                    onClick={handleEnrollClick}
+                  >
+                    Enroll Now{gitCourse.price > 0 ? ` - $${gitCourse.price}` : ' - Free'}
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -229,9 +284,12 @@ export default function GitCoursePage() {
                                 <Clock className="h-3 w-3 inline mr-1" />
                                 {project.timeEstimate}
                               </div>
-                              <Button size="sm" variant="outline">
-                                Start Project
-                              </Button>
+                              <ProjectButton project={{
+                                ...project,
+                                instructions: `Complete the ${project.name} project by following these steps:\n\n${project.successCriteria.map((c, i) => `${i + 1}. ${c}`).join('\n')}`,
+                                deliverables: project.successCriteria,
+                                estimatedTime: project.timeEstimate,
+                              }} />
                             </div>
                           </div>
                         ))}
@@ -275,9 +333,26 @@ export default function GitCoursePage() {
                               >
                                 {challenge.difficulty}
                               </Badge>
-                              <Button size="sm" variant="ghost" className="h-7 text-xs">
-                                Attempt
-                              </Button>
+                              <ChallengeButton
+                                challenge={{
+                                  ...challenge,
+                                  instructions: `${challenge.description}\n\nComplete this challenge to earn ${challenge.xp} XP.`,
+                                  starterCode: `// ${challenge.name}\n// ${challenge.description}\n\n// Write your code here\n`,
+                                  testCases: [
+                                    {
+                                      id: `${challenge.id}-test-1`,
+                                      description: 'Basic functionality test',
+                                      testFunction: '() => true', // Placeholder - would be actual tests
+                                    }
+                                  ],
+                                  language: 'javascript',
+                                  hints: [`This is a ${challenge.difficulty} challenge.`, 'Try to complete it to earn XP!'],
+                                }}
+                                isBoss={challenge.type === 'boss'}
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 text-xs"
+                              />
                             </div>
                           </div>
                         ))}
@@ -382,6 +457,27 @@ export default function GitCoursePage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Enrollment Modal */}
+        <EnrollmentModal
+          isOpen={showEnrollModal}
+          onClose={() => setShowEnrollModal(false)}
+          course={{
+            id: GIT_COURSE_DB_ID,
+            title: gitCourse.title,
+            description: gitCourse.description,
+            level: "Beginner to Advanced",
+            duration: Math.floor(gitCourse.duration / 60),
+            totalXP: gitCourse.totalXP,
+            price: gitCourse.price,
+            instructorName: gitCourse.instructor.name,
+            rating: gitCourse.rating,
+            studentCount: gitCourse.enrollmentCount,
+          }}
+          onEnroll={handleEnroll}
+          isEnrolling={isEnrolling}
+          error={enrollmentError}
+        />
       </div>
     </div>
   );

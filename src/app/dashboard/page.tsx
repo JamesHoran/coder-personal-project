@@ -2,21 +2,93 @@
 
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, TrendingUp, Award } from "lucide-react";
+import { CourseCard } from "@/components/course/CourseCard";
+import { BookOpen, TrendingUp, Award, Zap, Trophy } from "lucide-react";
 import Link from "next/link";
+
+interface EnrolledCourse {
+  id: string;
+  courseId: string;
+  progress: number;
+  lastAccessedAt: string;
+  course: {
+    id: string;
+    title: string;
+    instructorName: string;
+  };
+}
+
+interface CourseProgress {
+  completedLessons: string[];
+  completedProjects: string[];
+  completedChallenges: string[];
+  totalXPEarned: number;
+  user: {
+    totalXP: number;
+    level: number;
+    streak: number;
+  };
+}
 
 export default function DashboardPage() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const router = useRouter();
+  const [enrolledCourses, setEnrolledCourses] = useState<EnrolledCourse[]>([]);
+  const [progressData, setProgressData] = useState<CourseProgress | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/auth/login");
     }
   }, [isAuthenticated, router]);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      fetchEnrollments();
+      fetchProgressData();
+    }
+  }, [isAuthenticated, user]);
+
+  const fetchEnrollments = async () => {
+    if (!user) return;
+
+    try {
+      const response = await fetch(`/api/enrollments?userId=${user.id}`);
+      const data = await response.json();
+
+      if (data.success) {
+        // Sort by lastAccessedAt to show most recently accessed courses first
+        const sorted = data.data.sort((a: EnrolledCourse, b: EnrolledCourse) => {
+          return new Date(b.lastAccessedAt).getTime() - new Date(a.lastAccessedAt).getTime();
+        });
+        setEnrolledCourses(sorted);
+      }
+    } catch (error) {
+      console.error("Error fetching enrollments:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchProgressData = async () => {
+    if (!user) return;
+
+    try {
+      // Fetch progress for Git course as an example
+      const response = await fetch(`/api/progress/course/git?userId=${user.id}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setProgressData(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching progress data:", error);
+    }
+  };
 
   if (!isAuthenticated || !user) {
     return null;
@@ -41,18 +113,33 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-5 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total XP</CardTitle>
+              <Zap className="h-4 w-4 text-yellow-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {progressData?.user?.totalXP?.toLocaleString() || "0"}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Level {progressData?.user?.level || 1}
+              </p>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Enrolled Courses
               </CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <BookOpen className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">3</div>
+              <div className="text-2xl font-bold">{enrolledCourses.length}</div>
               <p className="text-xs text-muted-foreground">
-                +1 from last month
+                Active enrollments
               </p>
             </CardContent>
           </Card>
@@ -60,14 +147,16 @@ export default function DashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Hours Learned
+                Completed
               </CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Trophy className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">24.5</div>
+              <div className="text-2xl font-bold">
+                {progressData?.completedLessons?.length || 0}
+              </div>
               <p className="text-xs text-muted-foreground">
-                +12 from last week
+                Lessons finished
               </p>
             </CardContent>
           </Card>
@@ -75,14 +164,16 @@ export default function DashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Completion Rate
+                Challenges
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <Award className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">67%</div>
+              <div className="text-2xl font-bold">
+                {(progressData?.completedProjects?.length || 0) + (progressData?.completedChallenges?.length || 0)}
+              </div>
               <p className="text-xs text-muted-foreground">
-                +5% from last month
+                Projects & challenges
               </p>
             </CardContent>
           </Card>
@@ -90,14 +181,16 @@ export default function DashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Certificates
+                Current Streak
               </CardTitle>
-              <Award className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">2</div>
+              <div className="text-2xl font-bold">
+                {progressData?.user?.streak || 0} days
+              </div>
               <p className="text-xs text-muted-foreground">
-                +2 from last month
+                Keep it going!
               </p>
             </CardContent>
           </Card>
@@ -105,108 +198,51 @@ export default function DashboardPage() {
 
         {/* Continue Learning */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Continue Learning</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {continueLearning.map((course) => (
-              <Card key={course.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="aspect-video bg-muted rounded-md mb-4"></div>
-                  <CardTitle className="line-clamp-1">{course.title}</CardTitle>
-                  <CardDescription>{course.instructor}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between text-sm mb-2">
-                      <span className="text-muted-foreground">Progress</span>
-                      <span className="font-medium">{course.progress}%</span>
-                    </div>
-                    <div className="w-full bg-secondary rounded-full h-2">
-                      <div
-                        className="bg-primary rounded-full h-2 transition-all"
-                        style={{ width: `${course.progress}%` }}
-                      />
-                    </div>
-                  </div>
-                  <Link href={`/courses/${course.id}/learn`}>
-                    <Button className="w-full">Continue</Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Recommended Courses */}
-        <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Recommended For You</h2>
+            <h2 className="text-2xl font-bold">Continue Learning</h2>
             <Link href="/courses">
-              <Button variant="outline">Browse All</Button>
+              <Button variant="outline">Browse All Courses</Button>
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recommendedCourses.map((course) => (
-              <Card key={course.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="aspect-video bg-muted rounded-md mb-4"></div>
-                  <CardTitle className="line-clamp-2">{course.title}</CardTitle>
-                  <CardDescription>{course.instructor}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {course.description}
-                  </p>
-                  <Link href={`/courses/${course.id}`}>
-                    <Button variant="outline" className="w-full">View Course</Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-muted-foreground">Loading your courses...</p>
+              </div>
+            </div>
+          ) : enrolledCourses.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {enrolledCourses.map((enrollment) => (
+                <CourseCard
+                  key={enrollment.id}
+                  course={{
+                    id: enrollment.courseId,
+                    title: enrollment.course.title,
+                    instructor: enrollment.course.instructorName,
+                  }}
+                  progress={enrollment.progress}
+                  showProgress={true}
+                  enrolled={true}
+                />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12">
+              <div className="text-center">
+                <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No enrolled courses yet</h3>
+                <p className="text-muted-foreground mb-6">
+                  Start your learning journey by enrolling in a course
+                </p>
+                <Link href="/courses">
+                  <Button>Browse Courses</Button>
+                </Link>
+              </div>
+            </Card>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-const continueLearning = [
-  {
-    id: "1",
-    title: "Complete Web Development Bootcamp",
-    instructor: "Dr. Angela Yu",
-    progress: 45,
-  },
-  {
-    id: "2",
-    title: "Python for Data Science",
-    instructor: "Jose Portilla",
-    progress: 67,
-  },
-  {
-    id: "3",
-    title: "Machine Learning A-Z",
-    instructor: "Kirill Eremenko",
-    progress: 23,
-  },
-];
-
-const recommendedCourses = [
-  {
-    id: "4",
-    title: "React - The Complete Guide",
-    instructor: "Maximilian Schwarzmüller",
-    description: "Dive deep into React and build amazing projects",
-  },
-  {
-    id: "5",
-    title: "UI/UX Design Masterclass",
-    instructor: "Daniel Walter Scott",
-    description: "Learn user interface and user experience design",
-  },
-  {
-    id: "6",
-    title: "AWS Certified Solutions Architect",
-    instructor: "Stephane Maarek",
-    description: "Pass the AWS certification exam",
-  },
-];

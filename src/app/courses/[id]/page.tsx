@@ -16,6 +16,9 @@ import {
   CheckCircle2,
   Play,
 } from 'lucide-react'
+import { useEnrollment } from '@/hooks/useEnrollment'
+import { EnrollmentModal } from '@/components/modals/EnrollmentModal'
+import { useAuthStore } from '@/stores/authStore'
 
 interface Lesson {
   id: string
@@ -86,10 +89,20 @@ export default function CourseDetailPage() {
   const [course, setCourse] = useState<Course | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedPhase, setSelectedPhase] = useState<number>(0)
+  const [isEnrolled, setIsEnrolled] = useState(false)
+  const [showEnrollModal, setShowEnrollModal] = useState(false)
+  const { enroll, checkEnrollment, isEnrolling, error: enrollmentError } = useEnrollment()
+  const { isAuthenticated } = useAuthStore()
 
   useEffect(() => {
     fetchCourse()
   }, [params.id])
+
+  useEffect(() => {
+    if (course && isAuthenticated) {
+      checkEnrollmentStatus()
+    }
+  }, [course, isAuthenticated])
 
   const fetchCourse = async () => {
     try {
@@ -105,10 +118,44 @@ export default function CourseDetailPage() {
     }
   }
 
+  const checkEnrollmentStatus = async () => {
+    if (!course) return
+    const enrolled = await checkEnrollment(course.id)
+    setIsEnrolled(enrolled)
+  }
+
+  const handleEnrollClick = () => {
+    if (!isAuthenticated) {
+      router.push('/auth/login')
+      return
+    }
+    setShowEnrollModal(true)
+  }
+
   const handleEnroll = async () => {
-    // For now, just navigate to first lesson
-    // In production, create enrollment first
-    if (course && course.phases.length > 0) {
+    if (!course) return
+
+    const result = await enroll(course.id)
+
+    if (result.success) {
+      setShowEnrollModal(false)
+      setIsEnrolled(true)
+
+      // Navigate to first lesson
+      if (course.phases.length > 0) {
+        const firstModule = course.phases[0].modules[0]
+        const firstLesson = firstModule?.lessons[0]
+        if (firstLesson) {
+          router.push(`/courses/${course.id}/learn?lesson=${firstLesson.id}`)
+        }
+      }
+    }
+  }
+
+  const handleStartLearning = () => {
+    if (!course) return
+
+    if (course.phases.length > 0) {
       const firstModule = course.phases[0].modules[0]
       const firstLesson = firstModule?.lessons[0]
       if (firstLesson) {
@@ -171,10 +218,17 @@ export default function CourseDetailPage() {
                 </div>
               </div>
 
-              <Button onClick={handleEnroll} size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                <Play className="w-5 h-5 mr-2" />
-                Start Learning
-              </Button>
+              {isEnrolled ? (
+                <Button onClick={handleStartLearning} size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                  <Play className="w-5 h-5 mr-2" />
+                  Continue Learning
+                </Button>
+              ) : (
+                <Button onClick={handleEnrollClick} size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                  <Play className="w-5 h-5 mr-2" />
+                  Enroll Now
+                </Button>
+              )}
             </div>
 
             <div className="lg:col-span-1">
@@ -384,6 +438,29 @@ export default function CourseDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Enrollment Modal */}
+      {course && (
+        <EnrollmentModal
+          isOpen={showEnrollModal}
+          onClose={() => setShowEnrollModal(false)}
+          course={{
+            id: course.id,
+            title: course.title,
+            description: course.description,
+            level: course.level,
+            duration: course.duration,
+            totalXP: course.totalXP,
+            price: 0, // Assuming courses are free for now
+            instructorName: course.instructorName,
+            rating: course.rating,
+            studentCount: course.studentCount,
+          }}
+          onEnroll={handleEnroll}
+          isEnrolling={isEnrolling}
+          error={enrollmentError}
+        />
+      )}
     </div>
   )
 }
